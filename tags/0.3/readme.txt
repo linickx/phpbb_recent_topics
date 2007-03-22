@@ -63,3 +63,7 @@ to
 
 	`$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE WHERE forum_id != 1 ORDER BY topic_time DESC LIMIT $LIMIT");`
 to exclude forum 1 from the list.
+
+== Screenshots ==
+
+1. The Admin interface, where you set up the magic !
