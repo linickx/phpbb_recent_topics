@@ -67,3 +67,18 @@ to exclude forum 1 from the list.
 == Screenshots ==
 
 1. The Admin interface, where you set up the magic !
+
+== A bit about Database configuration. ==
+If wordpress & phpBB share a DB already then set $PHPBBDB to DB_NAME and everything will be fine, else you.re going to need to GRANT the wordpress user read access to phpBB.
+
+== How to GRANT wordpress read only access to phpBB ? ==
+If you don.t know it already you need to find your wordpress mysql user id, it.ll be in wp-config.php
+
+`define('DB_USER', 'wp_user');     // Your MySQL username`
+
+and you should have already found your phpbb database & table for the above.
+You need to type the following syntax into your mysql database
+
+`GRANT SELECT ON phpbb_database.phpbb_topics TO wp_user@localhost;`
+
+this can be achieved by logging into phpmyadmin as your phpbb user, selecting SQL and pasting the correct GRANT into the text box.
