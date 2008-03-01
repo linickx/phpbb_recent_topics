@@ -1,7 +1,7 @@
 <?php
 
 # Where am I ?
-$location = get_option('siteurl') . '/wp-admin/admin.php?page=phpbb_recent_topics/display/admin-options.php';
+$location = get_option('siteurl') . '/wp-admin/admin.php?page=phpbb-recent-topics/display/admin-options.php';
 
 # Setup our phpbb Settings.
 add_option('prt_phpbb_db', __('', 'prt'));
