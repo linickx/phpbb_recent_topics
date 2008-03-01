@@ -1,9 +1,9 @@
 <?php 
 /*
 Plugin Name: phpbb_recent_topics
-Plugin URI: http://www.linickx.com/blog/archives/273/recent-phpbb-topics-on-wordpress-plugin-v03
+Plugin URI: http://www.linickx.com/archives/392/recent-phpbb-topics-on-wordpress-plugin-v04
 Description: This plugin grabs your recent phpBB topics for you to display in wordpress.
-Version: 0.3
+Version: 0.4
 Author: Nick [LINICKX] Bettison
 Author URI: http://www.linickx.com
 */
@@ -54,7 +54,7 @@ define('PRTPLUGINPATH', (DIRECTORY_SEPARATOR != '/') ? str_replace(DIRECTORY_SEP
 
 			function PRT_add_admin_options() {
     			
-			add_options_page('phpBB Recent Topics Options', 'phpBB Recent Topics', 'manage_options', 'phpbb_recent_topics/display/admin-options.php');
+			add_options_page('phpBB Recent Topics Options', 'phpBB Recent Topics', 'manage_options', 'phpbb-recent-topics/display/admin-options.php');
 
 
 			}
