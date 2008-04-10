@@ -3,8 +3,8 @@ Contributors: Nick Bettison - LINICKX
 Donate link: http://www.linickx.com/index.php?content=donate
 Tags: phpBB, forum, topics, sidebar
 Requires at least: 2.0.9
-Tested up to: 2.0.9
-Stable tag: 0.3
+Tested up to: 2.5
+Stable tag: 0.4
 
 This plugin grabs your recent phpBB forum topics for you to display in wordpress.
 
@@ -18,7 +18,7 @@ Do you have a phpBB forum, do you want to drag your blog readers into your forum
 
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
-1. Configure the plugin, you need to tell wordpress about phpbb, this is done in the wordpress menu 'Options' -> 'phpBB Recent Topics'
+1. Configure the plugin, you need to tell wordpress about phpbb, this is done in the wordpress menu 'Settings' -> 'phpBB Recent Topics'
 
 	The following Settings are required:
 
@@ -26,11 +26,17 @@ Do you have a phpBB forum, do you want to drag your blog readers into your forum
 		* The name of the table where topics are held (the default is phpbb_topics )
 		* The full url of your forum for links (e.g. http://www.mydomain.com/forum)
 		* The number of topics to show. (If left blank you get 5)
+		* The Date Formatting, i.e. "d/M/y - g:i a" similar to the WordPress "General Settings"
 
 1. Hit 'Update Options"
 1. 	To output the list of topics in a page or post... 
 
 		* create a new page/post, type `{phpbb_recent_topics}` , hit 'Publish' or 'Create new page'
+	To output the list of topics in your theme sidebar using the widget…
+		* click “design” in the dashboard
+		* click “widgets”
+		* next to phpBB Recent Topics click “add”
+		* click "save changes"
 	To output the list of topics in your theme sidebar...
 
 		* edit sidebar.php and inside `<div id="sidebar">` type...
@@ -42,6 +48,9 @@ Do you have a phpBB forum, do you want to drag your blog readers into your forum
 		?>`
 
 == Frequently Asked Questions ==
+
+= Is phpBB3 Supported ?=
+Yes.
 
 = Can I output 10 Topics in my Page, and 3 Topics in my Sidebar ? =
 
@@ -63,6 +72,9 @@ to
 
 	`$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE WHERE forum_id != 1 ORDER BY topic_time DESC LIMIT $LIMIT");`
 to exclude forum 1 from the list.
+
+= Why is the date config under settings not in the widget configuration? =
+The date settings effect both the template tag and the widget
 
 == Screenshots ==
 

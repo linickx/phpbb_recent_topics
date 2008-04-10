@@ -59,8 +59,6 @@ define('PRTPLUGINPATH', (DIRECTORY_SEPARATOR != '/') ? str_replace(DIRECTORY_SEP
 
 			}
 
-
-
 } 
 
  
@@ -70,5 +68,48 @@ phpbbRecentTopics::bootstrap();
 function phpbb_topics($LIMIT) {
 	require(PRTPLUGINPATH . '/display/display.php');
 }
- 
+
+
+// Wiget functions...
+
+function wiget_options_phpbb_recent_topics() {
+
+	$options = $newoptions = get_option('prt_widget');
+	if ( $_POST["prt-submit"] ) {
+		$newoptions['title'] = strip_tags(stripslashes($_POST["prt-title"]));
+	}
+	if ( $options != $newoptions ) {
+		$options = $newoptions;
+		update_option('prt_widget', $options);
+	}
+	$title = attribute_escape($options['title']);
+?>
+			<p><label for="prt-title"><?php _e('Title:'); ?> <input class="widefat" id="prt-title" name="prt-title" type="text" value="<?php echo $title; ?>" /></label></p>
+			<input type="hidden" id="prt-submit" name="prt-submit" value="1" />
+<?php
+}
+
+function widget_phpbb_recent_topics() {
+
+        echo $before_widget;
+            echo $before_title
+                . stripslashes(get_option('prt_widget_title'))
+                . $after_title;
+
+        require(PRTPLUGINPATH . '/display/display.php');
+
+        echo $after_widget;
+
+}
+                        function phpbb_recent_topics_init_widget() {
+                                if (!function_exists('register_sidebar_widget'))
+                                        return;
+                                register_sidebar_widget('phpBB Recent Topics','widget_phpbb_recent_topics');
+				register_widget_control('phpBB Recent Topics', 'wiget_options_phpbb_recent_topics', 300, 100);
+                        }
+
+
+# Delay plugin execution until sidebar is loaded
+add_action('widgets_init', 'phpbb_recent_topics_init_widget');
+
 ?>
