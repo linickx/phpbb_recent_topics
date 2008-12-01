@@ -3,7 +3,7 @@
 Plugin Name: phpbb_recent_topics
 Plugin URI: http://www.linickx.com/archives/392/recent-phpbb-topics-on-wordpress-plugin-v04
 Description: This plugin grabs your recent phpBB topics for you to display in wordpress.
-Version: 0.4
+Version: 0.4.1
 Author: Nick [LINICKX] Bettison
 Author URI: http://www.linickx.com
 */
@@ -89,18 +89,20 @@ function wiget_options_phpbb_recent_topics() {
 <?php
 }
 
-function widget_phpbb_recent_topics() {
+	function widget_phpbb_recent_topics($args) {
+		// get variables
+		extract($args);
+		// retrieve title
+		$options = get_option('prt_widget');
+		$title = stripslashes($options['title']);
+ 
+		echo $before_widget, $before_title, $title, $after_title;
+ 
+		require(PRTPLUGINPATH . '/display/display.php');
+ 
+		echo $after_widget;
+	}
 
-        echo $before_widget;
-            echo $before_title
-                . stripslashes(get_option('prt_widget_title'))
-                . $after_title;
-
-        require(PRTPLUGINPATH . '/display/display.php');
-
-        echo $after_widget;
-
-}
                         function phpbb_recent_topics_init_widget() {
                                 if (!function_exists('register_sidebar_widget'))
                                         return;
