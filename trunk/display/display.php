@@ -6,6 +6,7 @@ $PHPBBDB = stripslashes(get_option('prt_phpbb_db'));
 $TOPIC_TABLE = stripslashes(get_option('prt_phpbb_tt'));
 $SITEURL = stripslashes(get_option('prt_phpbb_url'));
 $PHPBBDATE = stripslashes(get_option('prt_phpbb_date'));
+$PHPBBEXCLUDED = get_option('prt_phpbb_exclued');
 
 # Setup our Wordpress DB Connection
 	global $wpdb;
@@ -40,7 +41,26 @@ $PHPBBDATE = stripslashes(get_option('prt_phpbb_date'));
 $wpdb->select($PHPBBDB);
 
 # Run The query
-$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE ORDER BY topic_time DESC LIMIT $LIMIT");
+
+if (is_array($PHPBBEXCLUDED)) {
+	$counter = 0;
+	$countermax = count($PHPBBEXCLUDED) -1;
+	# Construct Excluded Query
+	$EXCLUDED_FORUM = "WHERE ";
+	foreach ($PHPBBEXCLUDED as $EXCLUDED) {
+		$EXCLUDED_FORUM .= "forum_id !=$EXCLUDED";
+			if ($counter < $countermax  ) {
+				$EXCLUDED_FORUM .= " AND ";
+			}
+	 $counter++;
+	}
+
+	$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE $EXCLUDED_FORUM ORDER BY topic_time DESC LIMIT $LIMIT");
+
+} else {
+	# No excluded Query
+	$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE ORDER BY topic_time DESC LIMIT $LIMIT");
+}
 
 if ($results){
 	
