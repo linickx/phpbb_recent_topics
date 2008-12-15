@@ -11,6 +11,7 @@ add_option('prt_phpbb_limit', __('5', 'prt'));
 add_option('prt_phpbb_date', __('d/M/y - g:i a', 'prt'));
 add_option('prt_phpbb_exclued',array(0));
 add_option('prt_phpbb_ft', __('phpbb_forums', 'prt'));
+add_option('prt_phpbb_newwin', __('0', 'prt'));
 
 # If we've been submitted, then save :-)
 if ('process' == $_POST['stage'])
@@ -22,6 +23,7 @@ if ('process' == $_POST['stage'])
 	update_option('prt_phpbb_limit', $_POST['prt_phpbb_limit']);
 	update_option('prt_phpbb_date', $_POST['prt_phpbb_date']);
         update_option('prt_phpbb_exclued', $_POST['prt_phpbb_exclued']);
+	update_option('prt_phpbb_newwin', $_POST['prt_phpbb_newwin']);
 }
 
 
@@ -34,6 +36,7 @@ $prt_phpbb_url = stripslashes(get_option('prt_phpbb_url'));
 $prt_phpbb_limit = stripslashes(get_option('prt_phpbb_limit'));
 $prt_phpbb_date = stripslashes(get_option('prt_phpbb_date'));
 $prt_phpbb_exclued = get_option('prt_phpbb_exclued');
+$prt_phpbb_newwin = stripslashes(get_option('prt_phpbb_newwin'));
 
 # COnnect to phpBB and get a list of forums
 $wpdb->select($prt_phpbb_db);
@@ -99,6 +102,14 @@ $wpdb->select($prt_phpbb_db);
         }
 
 ?>
+
+<tr valign="top">
+      <th scope="row"><?php _e('Open link in new window') ?></th>
+      <td>
+	<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_newwin" value="1" <?php if ($prt_phpbb_newwin == "1") { echo "checked"; } ?>/></td></tr></table>
+      </td>
+    </tr>
+
   </table>
     <p class="submit">
       <input type="submit" name="Submit" value="<?php _e('Update Options', 'prt') ?> &raquo;" />

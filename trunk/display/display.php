@@ -7,6 +7,7 @@ $TOPIC_TABLE = stripslashes(get_option('prt_phpbb_tt'));
 $SITEURL = stripslashes(get_option('prt_phpbb_url'));
 $PHPBBDATE = stripslashes(get_option('prt_phpbb_date'));
 $PHPBBEXCLUDED = get_option('prt_phpbb_exclued');
+$OPENINNEWWIN = stripslashes(get_option('prt_phpbb_newwin'));
 
 # Setup our Wordpress DB Connection
 	global $wpdb;
@@ -71,7 +72,9 @@ if ($results){
 		{
 
 		echo "<li>";
-		echo "<a href='" . $SITEURL . "/viewtopic.php?t=$topic->topic_id'>";
+		echo "<a ";
+			if ($OPENINNEWWIN == "1") { echo "target=\"_blank\""; }
+		echo " href='" . $SITEURL . "/viewtopic.php?t=$topic->topic_id'>";
 		echo "$topic->topic_title";
 		echo "</a>";
 
