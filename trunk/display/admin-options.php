@@ -38,6 +38,11 @@ $prt_phpbb_date = stripslashes(get_option('prt_phpbb_date'));
 $prt_phpbb_exclued = get_option('prt_phpbb_exclued');
 $prt_phpbb_newwin = stripslashes(get_option('prt_phpbb_newwin'));
 
+
+# Only Allow Admins Access
+if (current_user_can('level_10')) {
+
+
 # COnnect to phpBB and get a list of forums
 $wpdb->select($prt_phpbb_db);
 
@@ -116,3 +121,20 @@ $wpdb->select($prt_phpbb_db);
     </p>
   </form>
 </div>
+<?php
+
+# You're not an admin then
+} else {
+
+?>
+
+<div class="wrap">
+  <h2><?php _e('phpBB Recent Topics') ?></h2>
+
+<p>Sorry you do not have access to this page</p>
+
+</div>
+
+<?php
+}
+?>
