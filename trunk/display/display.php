@@ -64,7 +64,7 @@ if (is_array($PHPBBEXCLUDED)) {
 	$counter = 0;
 	$countermax = count($PHPBBEXCLUDED) -1;
 	# Construct Excluded Query
-	$EXCLUDED_FORUM = "WHERE ";
+	$EXCLUDED_FORUM = "AND ";
 	foreach ($PHPBBEXCLUDED as $EXCLUDED) {
 		$EXCLUDED_FORUM .= "forum_id !=$EXCLUDED";
 			if ($counter < $countermax  ) {
@@ -73,14 +73,15 @@ if (is_array($PHPBBEXCLUDED)) {
 	 $counter++;
 	}
 
+	// Added WHERE TOPIC_APPROVED = 1 to the following, creditz Ashish http://www.microstrategy101.com/
 
 	if ($prt_phpbb_dbinsecureon == "1") {
 
-		$results = $phpbbdb->get_results("SELECT * FROM $TOPIC_TABLE $EXCLUDED_FORUM ORDER BY topic_time DESC LIMIT $LIMIT");
+		$results = $phpbbdb->get_results("SELECT * FROM $TOPIC_TABLE WHERE TOPIC_APPROVED = 1 $EXCLUDED_FORUM ORDER BY topic_time DESC LIMIT $LIMIT");
 
 	} else {
 
-		$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE $EXCLUDED_FORUM ORDER BY topic_time DESC LIMIT $LIMIT");
+		$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE WHERE TOPIC_APPROVED = 1 $EXCLUDED_FORUM ORDER BY topic_time DESC LIMIT $LIMIT");
 
 	}
 } else {
@@ -88,9 +89,9 @@ if (is_array($PHPBBEXCLUDED)) {
 
 	if ($prt_phpbb_dbinsecureon == "1") {
 
-		$results = $phpbbdb->get_results("SELECT * FROM $TOPIC_TABLE ORDER BY topic_time DESC LIMIT $LIMIT");
+		$results = $phpbbdb->get_results("SELECT * FROM $TOPIC_TABLE WHERE TOPIC_APPROVED = 1 ORDER BY topic_time DESC LIMIT $LIMIT");
 	} else {
-		$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE ORDER BY topic_time DESC LIMIT $LIMIT");
+		$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE  WHERE TOPIC_APPROVED = 1 ORDER BY topic_time DESC LIMIT $LIMIT");
 	}
 }
 
