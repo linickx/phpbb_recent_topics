@@ -12,6 +12,10 @@ add_option('prt_phpbb_date', __('d/M/y - g:i a', 'prt'));
 add_option('prt_phpbb_exclued',array(0));
 add_option('prt_phpbb_ft', __('phpbb_forums', 'prt'));
 add_option('prt_phpbb_newwin', __('0', 'prt'));
+add_option('prt_phpbb_dbinsecureon', __('0', 'prt'));
+add_option('prt_phpbb_dbinsecureuid', __('phpbbuser', 'prt'));
+add_option('prt_phpbb_dbinsecurepw', __('phpbbpass', 'prt'));
+add_option('prt_phpbb_dbinsecurehost', __('localhost', 'prt'));
 
 # If we've been submitted, then save :-)
 if ('process' == $_POST['stage'])
@@ -24,6 +28,10 @@ if ('process' == $_POST['stage'])
 	update_option('prt_phpbb_date', $_POST['prt_phpbb_date']);
         update_option('prt_phpbb_exclued', $_POST['prt_phpbb_exclued']);
 	update_option('prt_phpbb_newwin', $_POST['prt_phpbb_newwin']);
+	update_option('prt_phpbb_dbinsecureon', $_POST['prt_phpbb_dbinsecureon']);
+	update_option('prt_phpbb_dbinsecureuid', $_POST['prt_phpbb_dbinsecureuid']);
+	update_option('prt_phpbb_dbinsecurepw', $_POST['prt_phpbb_dbinsecurepw']);
+	update_option('prt_phpbb_dbinsecurehost', $_POST['prt_phpbb_dbinsecurehost']);
 }
 
 
@@ -37,11 +45,13 @@ $prt_phpbb_limit = stripslashes(get_option('prt_phpbb_limit'));
 $prt_phpbb_date = stripslashes(get_option('prt_phpbb_date'));
 $prt_phpbb_exclued = get_option('prt_phpbb_exclued');
 $prt_phpbb_newwin = stripslashes(get_option('prt_phpbb_newwin'));
-
+$prt_phpbb_dbinsecureon = stripslashes(get_option('prt_phpbb_dbinsecureon'));
+$prt_phpbb_dbinsecureuid = stripslashes(get_option('prt_phpbb_dbinsecureuid'));
+$prt_phpbb_dbinsecurepw = stripslashes(get_option('prt_phpbb_dbinsecurepw'));
+$prt_phpbb_dbinsecurehost = stripslashes(get_option('prt_phpbb_dbinsecurehost'));
 
 # Only Allow Admins Access
 if (current_user_can('level_10')) {
-
 
 # COnnect to phpBB and get a list of forums
 $wpdb->select($prt_phpbb_db);
@@ -55,36 +65,60 @@ $wpdb->select($prt_phpbb_db);
   <h2><?php _e('phpBB Recent Topics') ?></h2>
   <form name="form1" method="post" action="<?php echo $location ?>&amp;updated=true">
   <input type="hidden" name="stage" value="process" />
-  <table width="100%" cellspacing="2" cellpadding="5" class="editform">
+  <table width="100%" cellspacing="2" cellpadding="5" class="form-table">
     <tr valign="top">
       <th scope="row"><?php _e('phpbb MySQL Database Name') ?></th>
-      <td><input name="prt_phpbb_db" id="prt_phpbb_db" style="width: 80%;" rows="1" wrap="virtual" cols="50" value="<?php echo $prt_phpbb_db; ?>" />
+      <td><input name="prt_phpbb_db" id="prt_phpbb_db" class="regular-text" value="<?php echo $prt_phpbb_db; ?>" />
       </td>
     </tr>
+  <tr valign="top">
+      <th scope="row"><?php _e('Enable Insecure Database Connection') ?></th>
+      <td>
+        <table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_dbinsecureon" value="1" <?php if ($prt_phpbb_dbinsecureon == "1") { echo "checked"; } ?>/><span class="description"> Only do this if you really have too! Please see README for more details</span></td></tr></table>
+      </td>
+    </tr>
+<?php if ($prt_phpbb_dbinsecureon == "1") { ?>
+ <tr valign="top">
+      <th scope="row"><?php _e('phpbb MySQL Database UserName') ?></th>
+      <td><input name="prt_phpbb_dbinsecureuid" id="prt_phpbb_dbinsecureuid" class="regular-text" value="<?php echo $prt_phpbb_dbinsecureuid; ?>" />
+      </td>
+    </tr>
+ <tr valign="top">
+      <th scope="row"><?php _e('phpbb MySQL Database Password') ?></th>
+      <td><input name="prt_phpbb_dbinsecurepw" id="prt_phpbb_dbinsecurepw" class="regular-text" value="<?php echo $prt_phpbb_dbinsecurepw; ?>" />
+      </td>
+    </tr>
+ <tr valign="top">
+      <th scope="row"><?php _e('phpbb MySQL Server') ?></th>
+      <td><input name="prt_phpbb_dbinsecurehost" id="prt_phpbb_dbinsecurehost" class="regular-text" value="<?php echo $prt_phpbb_dbinsecurehost; ?>" />
+      </td>
+    </tr>
+
+<?php } ?>
     <tr valign="top">
       <th scope="row"><?php _e('phpbb Topics Table Name') ?></th>
-      <td><input name="prt_phpbb_tt" id="prt_phpbb_tt" style="width: 80%;" rows="1" wrap="virtual" cols="50" value="<?php echo $prt_phpbb_tt; ?>" />
+      <td><input name="prt_phpbb_tt" id="prt_phpbb_tt" class="regular-text" value="<?php echo $prt_phpbb_tt; ?>" />
       </td>
     </tr>
     <tr valign="top">
       <th scope="row"><?php _e('phpbb Forums Table Name') ?></th>
-      <td><input name="prt_phpbb_ft" id="prt_phpbb_ft" style="width: 80%;" rows="1" wrap="virtual" cols="50" value="<?php echo $prt_phpbb_ft; ?>" />
+      <td><input name="prt_phpbb_ft" id="prt_phpbb_ft" class="regular-text" value="<?php echo $prt_phpbb_ft; ?>" />
       </td>
     </tr>
     <tr valign="top">
       <th scope="row"><?php _e('phpbb forum URL') ?></th>
-      <td><input name="prt_phpbb_url" id="prt_phpbb_url" style="width: 80%;" rows="1" wrap="virtual" cols="50" value="<?php echo $prt_phpbb_url; ?>" />
+      <td><input name="prt_phpbb_url" id="prt_phpbb_url" class="regular-text" value="<?php echo $prt_phpbb_url; ?>" />
       </td>
     </tr>
     <tr valign="top">
       <th scope="row"><?php _e('Number of Topics to show') ?></th>
-      <td><input name="prt_phpbb_limit" id="prt_phpbb_limit" style="width: 80%;" rows="1" wrap="virtual" cols="50" value="<?php echo $prt_phpbb_limit; ?>" />
+      <td><input name="prt_phpbb_limit" id="prt_phpbb_limit" class="regular-text" value="<?php echo $prt_phpbb_limit; ?>" />
       </td>
     </tr>
     <tr valign="top">
-      <th scope="row"><?php _e('Date Formmating') ?></th>
-      <td><input name="prt_phpbb_date" id="prt_phpbb_date" style="width: 80%;" rows="1" wrap="virtual" cols="50" value="<?php echo $prt_phpbb_date; ?>" />
-      </td>
+      <th scope="row"><?php _e('Date and Time Formmating') ?></th>
+      <td><input name="prt_phpbb_date" id="prt_phpbb_date" class="regular-text" value="<?php echo $prt_phpbb_date; ?>" />
+      <span class="description"> See <a href="http://codex.wordpress.org/Formatting_Date_and_Time">WP Codex Documentation on date formatting</a></span></td>
     </tr>
 <?php
 	if ($results){

@@ -8,6 +8,8 @@ $SITEURL = stripslashes(get_option('prt_phpbb_url'));
 $PHPBBDATE = stripslashes(get_option('prt_phpbb_date'));
 $PHPBBEXCLUDED = get_option('prt_phpbb_exclued');
 $OPENINNEWWIN = stripslashes(get_option('prt_phpbb_newwin'));
+# TODO change above variables to match "admin-display" style, cause it makes more sense!
+$prt_phpbb_dbinsecureon = stripslashes(get_option('prt_phpbb_dbinsecureon'));
 
 # Setup our Wordpress DB Connection
 	global $wpdb;
@@ -39,7 +41,22 @@ $OPENINNEWWIN = stripslashes(get_option('prt_phpbb_newwin'));
         }
 
 # Connect to php BB
-$wpdb->select($PHPBBDB);
+#
+# Insecure Method
+if ($prt_phpbb_dbinsecureon == "1") { 
+
+	$prt_phpbb_dbinsecureuid = stripslashes(get_option('prt_phpbb_dbinsecureuid'));
+	$prt_phpbb_dbinsecurepw = stripslashes(get_option('prt_phpbb_dbinsecurepw'));
+	$prt_phpbb_dbinsecurehost = stripslashes(get_option('prt_phpbb_dbinsecurehost'));
+
+	$phpbbdb = new wpdb($prt_phpbb_dbinsecureuid, $prt_phpbb_dbinsecurepw, $PHPBBDB, $prt_phpbb_dbinsecurehos);
+
+} else {
+# Secure Method
+
+	$wpdb->select($PHPBBDB);
+
+}
 
 # Run The query
 
@@ -56,11 +73,25 @@ if (is_array($PHPBBEXCLUDED)) {
 	 $counter++;
 	}
 
-	$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE $EXCLUDED_FORUM ORDER BY topic_time DESC LIMIT $LIMIT");
 
+	if ($prt_phpbb_dbinsecureon == "1") {
+
+		$results = $phpbbdb->get_results("SELECT * FROM $TOPIC_TABLE $EXCLUDED_FORUM ORDER BY topic_time DESC LIMIT $LIMIT");
+
+	} else {
+
+		$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE $EXCLUDED_FORUM ORDER BY topic_time DESC LIMIT $LIMIT");
+
+	}
 } else {
 	# No excluded Query
-	$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE ORDER BY topic_time DESC LIMIT $LIMIT");
+
+	if ($prt_phpbb_dbinsecureon == "1") {
+
+		$results = $phpbbdb->get_results("SELECT * FROM $TOPIC_TABLE ORDER BY topic_time DESC LIMIT $LIMIT");
+	} else {
+		$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE ORDER BY topic_time DESC LIMIT $LIMIT");
+	}
 }
 
 if ($results){
@@ -91,7 +122,9 @@ if ($results){
 		echo "<h2> phpBB Error  -$TOPIC_TABLE </h2>";
 }
 
-# Connect back to wordpress :-)
-$wpdb->select(DB_NAME);
+ if ($prt_phpbb_dbinsecureon == "0") {
+	# Connect back to wordpress :-)
+	$wpdb->select(DB_NAME);
+ }
 
 ?>
