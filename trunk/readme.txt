@@ -14,6 +14,8 @@ Do you have a phpBB forum, do you want to drag your blog readers into your forum
 
 == Installation ==
 
+1. Setup your Database Connection, see Other Notes
+
 1. unzip phpbb_recent_topics.zip in your `/wp-content/plugins/` directory. (You'll have a new directory, with this plugin in `/wp-content/plugins/phpbb_recent_topics`)
 
 1. Activate the plugin through the 'Plugins' menu in WordPress
@@ -49,7 +51,7 @@ Do you have a phpBB forum, do you want to drag your blog readers into your forum
 
 == Frequently Asked Questions ==
 
-= Is phpBB3 Supported ?=
+= Is phpBB3 Supported ? =
 Yes.
 
 = Can I output 10 Topics in my Page, and 3 Topics in my Sidebar ? =
@@ -64,24 +66,66 @@ Yes ! In the Wordpress menu 'Options' -> 'phpBB Recent Topics', set 'The number 
 
 = Can I exclude a certain forum from the list ? =
 
-In this version, the only way to do that is to hack `/wp-content/plugins/phpbb_recent_topics/display/display.php`, change
+Yes, use the new 0.5.x feature in the admin settings
 
-	`$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE ORDER BY topic_time DESC LIMIT $LIMIT");`
+= Why do I get - Sorry you do not have access to this page? =
 
-to
-
-	`$results = $wpdb->get_results("SELECT * FROM $TOPIC_TABLE WHERE forum_id != 1 ORDER BY topic_time DESC LIMIT $LIMIT");`
-to exclude forum 1 from the list.
+You're not an Administrator
 
 = Why is the date config under settings not in the widget configuration? =
+
 The date settings effect both the template tag and the widget
+
+= What is Insecure MySQL Connectivity ? =
+
+Some people cannot GRANT priveliges from one DB to another; insecure connectivity allows you to store the phpbb database credentials within the WordPress database.
+
+= Why is Insecure MySQL Connectivity Insecure? =
+
+The phpbb database credentials are stored in the WordPress database in CLEAR TEXT, this is bad, as anyone with access to the WP DB can get full access to phpbb. Another reason is that usually the credentials given to the phpbb application are FULL access, we only need to read the database, so it's much better to restrict access.
+
+= Can I connect to a phpbb databse on a different server? =
+
+Yes, use the Insecure Connectivity method, and change the host to the IP address of the server
+
 
 == Screenshots ==
 
 1. The Admin interface, where you set up the magic !
 
+== Changelog ==
+
+= 0.5.2 =
+* 0.4.2 patch for WP 2.8.x Added to 0.5.x Branch
+* New Insecure Connectivity option added
+* Admin Settings page has CSS that matches WP 2.7/2.8 rather than 2.5 :)
+
+= 0.5.1 =
+* New Exclude Forums functionality added
+
+= 0.4.2 =
+* Fixed for WordPress 2.8.x
+
+= 0.4.1 =
+* Widget fixed
+
+= 0.4 =
+* Plugin Tested with WP2.5 & PHPBB3
+* Quashed the install bug where by phpbb-recent-topics was confused with phpbb_recent_topics
+* Sidebar widget implemented
+* Editable Time & Date support added
+
+= 0.3 =
+* Admin Interface Added
+
+= 0.2 =
+* Internal Release, changed display method to fix compatability issue with other plugins
+
+= 0.1 =
+* First Release :)
+
 == A bit about Database configuration. ==
-If wordpress & phpBB share a DB already then set $PHPBBDB to DB_NAME and everything will be fine, else you.re going to need to GRANT the wordpress user read access to phpBB.
+If wordpress & phpBB share a DB already then set $PHPBBDB to DB_NAME and everything will be fine, else you.re going to need to GRANT the wordpress user read access to phpBB. (If you really need to, you can store the phpbb databse credential in the plugin using the "Insecure" connectivity method.)
 
 == How to GRANT wordpress read only access to phpBB ? ==
 If you don.t know it already you need to find your wordpress mysql user id, it.ll be in wp-config.php
@@ -93,4 +137,20 @@ You need to type the following syntax into your mysql database
 
 `GRANT SELECT ON phpbb_database.phpbb_topics TO wp_user@localhost;`
 
+AND
+
+`GRANT SELECT ON phpbb_database.phpbb_forums TO wp_user@localhost;`
+
 this can be achieved by logging into phpmyadmin as your phpbb user, selecting SQL and pasting the correct GRANT into the text box.
+
+== How to use the Insecure Database Connectivity Method ==
+
+From the phpbb_recent_topics admin / settings page, tick the .Enable Insecure Database Connection. box, and submit, when the page re-freshes you.ll have some more boxes to populate, from your phpbb config.php fill in
+
+`
+$dbuser = phpbb MySQL Database UserName
+$dbpasswd = phpbb MySQL Database Password
+$dbhost = phpbb MySQL Server
+`
+
+Click update, and you should be connected!
