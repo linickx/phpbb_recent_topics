@@ -100,6 +100,7 @@ Yes, use the Insecure Connectivity method, and change the host to the IP address
 * New Insecure Connectivity option added
 * Admin Settings page has CSS that matches WP 2.7/2.8 rather than 2.5 :)
 * Only Approved posts allowed - creditz Ashish http://www.microstrategy101.com/
+* Option for link to forum to be opened in new window added.
 
 = 0.5.1 =
 * New Exclude Forums functionality added
