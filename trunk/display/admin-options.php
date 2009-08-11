@@ -53,11 +53,25 @@ $prt_phpbb_dbinsecurehost = stripslashes(get_option('prt_phpbb_dbinsecurehost'))
 # Only Allow Admins Access
 if (current_user_can('level_10')) {
 
-# COnnect to phpBB and get a list of forums
-$wpdb->select($prt_phpbb_db);
+	# How do we connect to phpbb?
+	if ($prt_phpbb_dbinsecureon != "1") {
 
-	# Run The query
-	$results = $wpdb->get_results("SELECT forum_id,forum_name FROM $prt_phpbb_ft");
+		# COnnect to phpBB and get a list of forums
+		$wpdb->select($prt_phpbb_db);
+
+		# Run The query
+        	$results = $wpdb->get_results("SELECT forum_id,forum_name FROM $prt_phpbb_ft");
+
+        	# Connect back to wordpress :-)
+        	$wpdb->select(DB_NAME);
+
+	} else {
+		# Make new DB Connection
+		$phpbbdb = new wpdb($prt_phpbb_dbinsecureuid, $prt_phpbb_dbinsecurepw, $prt_phpbb_db, $prt_phpbb_dbinsecurehos);
+		# Run The query
+        	$results = $phpbbdb->get_results("SELECT forum_id,forum_name FROM $prt_phpbb_ft");
+	}
+
 
 # Now print the admin form!
 ?>
@@ -138,7 +152,14 @@ $wpdb->select($prt_phpbb_db);
     </tr>
 
 <?php
-        }
+        } else {
+?>
+	<tr valign="top">
+      <th scope="row"><?php _e('Excluded Forums Not Enabled') ?></th>
+	<td>Please add new GRANT permissions <code>GRANT SELECT ON phpbb_database.phpbb_forums TO wp_user@localhost;</code> <br /><span class="description">See README for more details</span></td>
+	</tr>
+<?php
+	}
 
 ?>
 

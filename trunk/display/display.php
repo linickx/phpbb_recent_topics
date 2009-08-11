@@ -123,7 +123,7 @@ if ($results){
 		echo "<h2> phpBB Error  -$TOPIC_TABLE </h2>";
 }
 
- if ($prt_phpbb_dbinsecureon == "0") {
+ if ($prt_phpbb_dbinsecureon != "1") {
 	# Connect back to wordpress :-)
 	$wpdb->select(DB_NAME);
  }
