@@ -175,6 +175,22 @@ if (current_user_can('level_10')) {
       <input type="submit" name="Submit" value="<?php _e('Update Options', 'prt') ?> &raquo;" />
     </p>
   </form>
+<hr />
+
+<?php
+        # Let's tell users about phpbb_recent_topics news!
+        $lnx_feed = fetch_feed('http://www.linickx.com/archives/tag/phpbb_recent_topics/feed');
+?>
+        <h3>phpBB Recent Topics News</h3>
+        <ul>
+<?php
+        foreach ($lnx_feed->get_items() as $item){
+                        printf('<li><a href="%s">%s</a></li>',$item->get_permalink(), $item->get_title());
+        }
+?>
+        </ul>
+	<p><small><a href="http://www.linickx.com/archives/tag/phpbb_recent_topics/feed">Subcribe to this feed</a></small></p>
+
 </div>
 <?php
 
