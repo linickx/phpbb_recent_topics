@@ -3,7 +3,7 @@ Contributors: Nick Bettison - LINICKX
 Donate link: http://www.linickx.com/index.php?content=donate
 Tags: phpBB, forum, topics, sidebar
 Requires at least: 2.0.9
-Tested up to: 2.8.3
+Tested up to: 2.8.4
 Stable tag: 0.4.2
 
 This plugin grabs your recent phpBB forum topics for you to display in wordpress.
