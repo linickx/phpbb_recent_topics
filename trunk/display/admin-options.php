@@ -141,12 +141,14 @@ if (current_user_can('level_10')) {
       <th scope="row"><?php _e('Excluded Forums') ?></th>
       <td><table><?php foreach ($results as $forum) {
 		?><tr><td><?php echo $forum->forum_name;?></td><td><input type="checkbox" name="prt_phpbb_exclued[]" value="<?php echo $forum->forum_id;?>" <?php 
+if (is_array($prt_phpbb_exclued)) {
 	foreach ($prt_phpbb_exclued as $excluded) {
 		# Switch on Check Boxes!
 		if ($excluded == $forum->forum_id) {
 			echo "checked";
 		}
-	} ?>/></td></tr><?php
+	} 
+} ?>/></td></tr><?php
 	} ?></table>
       </td>
     </tr>
