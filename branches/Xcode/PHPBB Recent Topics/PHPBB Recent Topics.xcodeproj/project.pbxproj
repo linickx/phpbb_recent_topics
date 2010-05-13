@@ -1,0 +1,62 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXGroup section */
+		0126ED86119C218A00D18F76 = {
+			isa = PBXGroup;
+			children = (
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		0126ED88119C218A00D18F76 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 0126ED8B119C218A00D18F76 /* Build configuration list for PBXProject "PHPBB Recent Topics" */;
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = 0126ED86119C218A00D18F76;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		0126ED89119C218A00D18F76 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		0126ED8A119C218A00D18F76 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0126ED8B119C218A00D18F76 /* Build configuration list for PBXProject "PHPBB Recent Topics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0126ED89119C218A00D18F76 /* Debug */,
+				0126ED8A119C218A00D18F76 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0126ED88119C218A00D18F76 /* Project object */;
+}
