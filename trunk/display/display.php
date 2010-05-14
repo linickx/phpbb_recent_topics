@@ -16,7 +16,7 @@
 	# Setup our Wordpress DB Connection
 	global $wpdb;
 	
-	# Are we a function call or Page call ? Set up our list length...
+	# Limit can be set either in the DB or via a Template Tag....
 	
 	if (is_null($LIMIT)) { 
 		
@@ -25,7 +25,17 @@
 		if (is_null($LIMIT)) {
 			$LIMIT = 5;
 		}
+		
+		
 	}
+	
+	# Error Check $LIMIT...
+	
+	if (!is_numeric($LIMIT)) {
+		$LIMIT = 5;
+	}
+	
+	settype($LIMIT, "integer");
 	
 	# Check the $prt_phpbb_tt variable
 	
@@ -150,6 +160,7 @@
 				}
 				
 	        	$post->post_text = preg_replace("(\[.+?\])is",'',$post->post_text); // strip BBcodes from post
+				$post->post_text = strip_tags($post->post_text); // Strip HTML / PHP Tags from post.
 				$post->post_text = substr($post->post_text,0,512)."..."; //limit the quote from the body to xxx chars
 	        	
 				echo " title='" . $post->post_text . "' ";
