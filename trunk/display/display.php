@@ -12,6 +12,7 @@
 	$prt_phpbb_dbinsecureon = stripslashes(get_option('prt_phpbb_dbinsecureon'));
 	$prt_phpbb_latest_topic = stripslashes(get_option('prt_phpbb_latest_topic'));
 	$prt_phpbb_body_as_tooltip = stripslashes(get_option('prt_phpbb_body_as_tooltip'));
+	$prt_phpbb_tooltipsize = stripslashes(get_option('prt_phpbb_tooltipsize'));
 	
 	# Setup our Wordpress DB Connection
 	global $wpdb;
@@ -30,15 +31,23 @@
 	}
 	
 	# Error Check $LIMIT...
-	
 	if (!is_numeric($LIMIT)) {
+		
 		$LIMIT = 5;
+		
 	}
+	settype($LIMIT, "integer"); // No fractions jokers
 	
-	settype($LIMIT, "integer");
+	# Error check $prt_phpbb_tooltipsize
+	if (!is_numeric($prt_phpbb_tooltipsize)) {
+		
+		$prt_phpbb_tooltipsize = 512;
+		
+	}
+	settype($prt_phpbb_tooltipsize, "integer");
+	
 	
 	# Check the $prt_phpbb_tt variable
-	
 	if (is_null($prt_phpbb_tt)) {
 		
 		$prt_phpbb_tt = "phpbb_topics";
@@ -53,7 +62,6 @@
 	}
 	
 	# Check the $prt_phpbb_pt variable
-	
 	if (is_null($prt_phpbb_pt)) {
 		
 		$prt_phpbb_tt = "phpbb_posts";
@@ -161,7 +169,7 @@
 				
 	        	$post->post_text = preg_replace("(\[.+?\])is",'',$post->post_text); // strip BBcodes from post
 				$post->post_text = strip_tags($post->post_text); // Strip HTML / PHP Tags from post.
-				$post->post_text = substr($post->post_text,0,512)."..."; //limit the quote from the body to xxx chars
+				$post->post_text = substr($post->post_text,0,$prt_phpbb_tooltipsize)."..."; //limit the quote from the body to $prt_phpbb_tooltipsize chars
 	        	
 				echo " title='" . $post->post_text . "' ";
 

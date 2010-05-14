@@ -19,6 +19,7 @@
 	add_option('prt_phpbb_pt', __('phpbb_posts', 'prt'));
 	add_option('prt_phpbb_latest_topic', __('0', 'prt'));
 	add_option('prt_phpbb_body_as_tooltip', __('0', 'prt'));
+	add_option('prt_phpbb_tooltipsize', __('512', 'prt'));
 	
 	# If we've been submitted, then save :-)
 	if ('process' == $_POST['stage'])
@@ -34,6 +35,7 @@
 		update_option('prt_phpbb_newwin', $_POST['prt_phpbb_newwin']);
 		update_option('prt_phpbb_latest_topic', $_POST['prt_phpbb_latest_topic']);
 		update_option('prt_phpbb_body_as_tooltip', $_POST['prt_phpbb_body_as_tooltip']);
+		update_option('prt_phpbb_tooltipsize', $_POST['prt_phpbb_tooltipsize']);
 		update_option('prt_phpbb_dbinsecureon', $_POST['prt_phpbb_dbinsecureon']);
 		update_option('prt_phpbb_dbinsecureuid', $_POST['prt_phpbb_dbinsecureuid']);
 		update_option('prt_phpbb_dbinsecurepw', $_POST['prt_phpbb_dbinsecurepw']);
@@ -53,6 +55,7 @@
 	$prt_phpbb_newwin = stripslashes(get_option('prt_phpbb_newwin'));
 	$prt_phpbb_latest_topic = stripslashes(get_option('prt_phpbb_latest_topic'));
 	$prt_phpbb_body_as_tooltip = stripslashes(get_option('prt_phpbb_body_as_tooltip'));
+	$prt_phpbb_tooltipsize = stripslashes(get_option('prt_phpbb_tooltipsize'));
 	$prt_phpbb_dbinsecureon = stripslashes(get_option('prt_phpbb_dbinsecureon'));
 	$prt_phpbb_dbinsecureuid = stripslashes(get_option('prt_phpbb_dbinsecureuid'));
 	$prt_phpbb_dbinsecurepw = stripslashes(get_option('prt_phpbb_dbinsecurepw'));
@@ -149,17 +152,27 @@
 <tr valign="top">
 <th scope="row"><?php _e('Sort Results by Post Date') ?></th>
 <td>
-<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_latest_topic" value="1" <?php if ($prt_phpbb_latest_topic == "1") { echo "checked"; } ?>/></td></tr></table>
-<span class="description">By default results are isorted by the Date of Topic <em>creation</em>, this will sort topics by <em>freshness</em>.</span></td>
+<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_latest_topic" value="1" <?php if ($prt_phpbb_latest_topic == "1") { echo "checked"; } ?>/></td><td><span class="description">By default results are isorted by the Date of Topic <em>creation</em>, this will sort topics by <em>freshness</em>.</span></td></tr></table>
 </td>
 </tr>
 <tr valign="top">
 <th scope="row"><?php _e('Enable Tooltip') ?></th>
 <td>
-<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_body_as_tooltip" value="1" <?php if ($prt_phpbb_body_as_tooltip == "1") { echo "checked"; } ?>/></td></tr></table>
-<span class="description"> The post content will be shown as a tooltip over the link.</span></td>
+<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_body_as_tooltip" value="1" <?php if ($prt_phpbb_body_as_tooltip == "1") { echo "checked"; } ?>/></td><td><span class="description"> The post content will be shown as a tooltip over the hyperlink.</span></td></tr></table>
 </td>
 </tr>
+<?php
+	if ($prt_phpbb_body_as_tooltip == "1") {
+	?>
+<tr valign="top">
+<th scope="row"><?php _e('Tooltip Size') ?></th>
+<td><input name="prt_phpbb_tooltipsize" id="prt_phpbb_tooltipsize" class="regular-text" value="<?php echo $prt_phpbb_tooltipsize; ?>" />
+<span class="description"> How many characters show we show in the tooltip bubble? </span>
+</td>
+</tr>
+<?php
+	}
+	?>
 <?php
 	if ($results){
 	?>
