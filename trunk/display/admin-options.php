@@ -18,6 +18,7 @@
 	add_option('prt_phpbb_dbinsecurehost', __('localhost', 'prt'));
 	add_option('prt_phpbb_pt', __('phpbb_posts', 'prt'));
 	add_option('prt_phpbb_latest_topic', __('0', 'prt'));
+	add_option('prt_phpbb_body_as_tooltip', __('0', 'prt'));
 	
 	# If we've been submitted, then save :-)
 	if ('process' == $_POST['stage'])
@@ -32,6 +33,7 @@
         update_option('prt_phpbb_exclued', $_POST['prt_phpbb_exclued']);
 		update_option('prt_phpbb_newwin', $_POST['prt_phpbb_newwin']);
 		update_option('prt_phpbb_latest_topic', $_POST['prt_phpbb_latest_topic']);
+		update_option('prt_phpbb_body_as_tooltip', $_POST['prt_phpbb_body_as_tooltip']);
 		update_option('prt_phpbb_dbinsecureon', $_POST['prt_phpbb_dbinsecureon']);
 		update_option('prt_phpbb_dbinsecureuid', $_POST['prt_phpbb_dbinsecureuid']);
 		update_option('prt_phpbb_dbinsecurepw', $_POST['prt_phpbb_dbinsecurepw']);
@@ -50,6 +52,7 @@
 	$prt_phpbb_exclued = get_option('prt_phpbb_exclued');
 	$prt_phpbb_newwin = stripslashes(get_option('prt_phpbb_newwin'));
 	$prt_phpbb_latest_topic = stripslashes(get_option('prt_phpbb_latest_topic'));
+	$prt_phpbb_body_as_tooltip = stripslashes(get_option('prt_phpbb_body_as_tooltip'));
 	$prt_phpbb_dbinsecureon = stripslashes(get_option('prt_phpbb_dbinsecureon'));
 	$prt_phpbb_dbinsecureuid = stripslashes(get_option('prt_phpbb_dbinsecureuid'));
 	$prt_phpbb_dbinsecurepw = stripslashes(get_option('prt_phpbb_dbinsecurepw'));
