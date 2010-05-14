@@ -143,19 +143,18 @@
 <td><input name="prt_phpbb_date" id="prt_phpbb_date" class="regular-text" value="<?php echo $prt_phpbb_date; ?>" />
 <span class="description"> See <a href="http://codex.wordpress.org/Formatting_Date_and_Time">WP Codex Documentation on date formatting</a></span></td>
 </tr>
-
 <tr valign="top">
-<th scope="row"><?php _e('Show latest topic with posts') ?></th>
+<th scope="row"><?php _e('Sort Results by Post Date') ?></th>
 <td>
 <table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_latest_topic" value="1" <?php if ($prt_phpbb_latest_topic == "1") { echo "checked"; } ?>/></td></tr></table>
+<span class="description">By default results are isorted by the Date of Topic <em>creation</em>, this will sort topics by <em>freshness</em>.</span></td>
 </td>
 </tr>
-
-
 <tr valign="top">
-<th scope="row"><?php _e('Show body of post as tooltip') ?></th>
+<th scope="row"><?php _e('Enable Tooltip') ?></th>
 <td>
 <table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_body_as_tooltip" value="1" <?php if ($prt_phpbb_body_as_tooltip == "1") { echo "checked"; } ?>/></td></tr></table>
+<span class="description"> The post content will be shown as a tooltip over the link.</span></td>
 </td>
 </tr>
 <?php

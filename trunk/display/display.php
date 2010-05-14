@@ -2,14 +2,13 @@
 	
 	# Get the Options from the Database
 	
-	$PHPBBDB = stripslashes(get_option('prt_phpbb_db'));
-	$TOPIC_TABLE = stripslashes(get_option('prt_phpbb_tt'));
-	$POSTS_TABLE = stripslashes(get_option('prt_phpbb_pt'));
-	$SITEURL = stripslashes(get_option('prt_phpbb_url'));
-	$PHPBBDATE = stripslashes(get_option('prt_phpbb_date'));
-	$PHPBBEXCLUDED = get_option('prt_phpbb_exclued');
-	$OPENINNEWWIN = stripslashes(get_option('prt_phpbb_newwin'));
-	# TODO change above variables to match "admin-display" style, cause it makes more sense!
+	$prt_phpbb_db = stripslashes(get_option('prt_phpbb_db'));
+	$prt_phpbb_tt = stripslashes(get_option('prt_phpbb_tt'));
+	$prt_phpbb_pt = stripslashes(get_option('prt_phpbb_pt'));
+	$prt_phpbb_url = stripslashes(get_option('prt_phpbb_url'));
+	$prt_phpbb_date = stripslashes(get_option('prt_phpbb_date'));
+	$prt_phpbb_exclued = get_option('prt_phpbb_exclued');
+	$prt_phpbb_newwin = stripslashes(get_option('prt_phpbb_newwin'));
 	$prt_phpbb_dbinsecureon = stripslashes(get_option('prt_phpbb_dbinsecureon'));
 	$prt_phpbb_latest_topic = stripslashes(get_option('prt_phpbb_latest_topic'));
 	$prt_phpbb_body_as_tooltip = stripslashes(get_option('prt_phpbb_body_as_tooltip'));
@@ -28,33 +27,33 @@
 		}
 	}
 	
-	# Check the $TOPIC_TABLE variable
+	# Check the $prt_phpbb_tt variable
 	
-	if (is_null($TOPIC_TABLE)) {
+	if (is_null($prt_phpbb_tt)) {
 		
-		$TOPIC_TABLE = "phpbb_topics";
+		$prt_phpbb_tt = "phpbb_topics";
 		
 	}
 	
-	# if $TOPIC_TABLE is set up empty :)
-	if ($TOPIC_TABLE == "") {
+	# if $prt_phpbb_tt is set up empty :)
+	if ($prt_phpbb_tt == "") {
 		
-		$TOPIC_TABLE = "phpbb_topics";
-		
-	}
-	
-	# Check the $POSTS_TABLE variable
-	
-	if (is_null($POSTS_TABLE)) {
-		
-		$TOPIC_TABLE = "phpbb_posts";
+		$prt_phpbb_tt = "phpbb_topics";
 		
 	}
 	
-	# if $POSTS_TABLE is set up empty :)
-	if ($POSTS_TABLE == "") {
+	# Check the $prt_phpbb_pt variable
+	
+	if (is_null($prt_phpbb_pt)) {
 		
-		$POSTS_TABLE = "phpbb_topics";
+		$prt_phpbb_tt = "phpbb_posts";
+		
+	}
+	
+	# if $prt_phpbb_pt is set up empty :)
+	if ($prt_phpbb_pt == "") {
+		
+		$prt_phpbb_pt = "phpbb_topics";
 		
 	}
 	
@@ -68,24 +67,23 @@
 		$prt_phpbb_dbinsecurepw = stripslashes(get_option('prt_phpbb_dbinsecurepw'));
 		$prt_phpbb_dbinsecurehost = stripslashes(get_option('prt_phpbb_dbinsecurehost'));
 		
-		$phpbbdb = new wpdb($prt_phpbb_dbinsecureuid, $prt_phpbb_dbinsecurepw, $PHPBBDB, $prt_phpbb_dbinsecurehos);
+		$phpbbdb = new wpdb($prt_phpbb_dbinsecureuid, $prt_phpbb_dbinsecurepw, $prt_phpbb_db, $prt_phpbb_dbinsecurehos);
 		
 	} else {
-		# Secure Method
 		
-		$wpdb->select($PHPBBDB);
+		# Secure Method
+		$wpdb->select($prt_phpbb_db);
 		
 	}
 	
-	# Run The query
-		// Build a query based on some paramters Changed by Number3NL (12 may 2010)
+	# Run The query - SQL Querey restructuring by Number3NL
 	
-	if (is_array($PHPBBEXCLUDED)) {
+	if (is_array($prt_phpbb_exclued)) {
 		$counter = 0;
-		$countermax = count($PHPBBEXCLUDED) -1;
+		$countermax = count($prt_phpbb_exclued) -1;
 		# Construct Excluded Query
 		$EXCLUDED_FORUM = "AND ";
-		foreach ($PHPBBEXCLUDED as $EXCLUDED) {
+		foreach ($prt_phpbb_exclued as $EXCLUDED) {
 			$EXCLUDED_FORUM .= "forum_id !=$EXCLUDED";
 			if ($counter < $countermax  ) {
 				$EXCLUDED_FORUM .= " AND ";
@@ -96,25 +94,25 @@
         $EXCLUDED_FORUM = "";
 	}
 	
-		// Added WHERE TOPIC_APPROVED = 1 to the following, creditz Ashish http://www.microstrategy101.com/
-	$sql_query = "SELECT * FROM $TOPIC_TABLE WHERE TOPIC_APPROVED = 1 $EXCLUDED_FORUM $EXCLUDED_FORUM ORDER BY";
+	# Added WHERE TOPIC_APPROVED = 1 to the following, creditz Ashish http://www.microstrategy101.com/
+	$sql_query = "SELECT * FROM $prt_phpbb_tt WHERE TOPIC_APPROVED = 1 $EXCLUDED_FORUM $EXCLUDED_FORUM ORDER BY";
 	
 	if ($prt_phpbb_latest_topic == "1") {
-		$sql_query .= " topic_last_post_time";
+		$sql_query .= " topic_last_post_time"; // Sort by Post Date/Time
 	} else {
-		$sql_query .= " topic_time";
+		$sql_query .= " topic_time"; // Sort by Topic Date/Time
 	} 
 	
 	$sql_query .= " DESC LIMIT $LIMIT";
 	
-		//finally fetch it from the database
+	# Execute SQL Query
 	if ($prt_phpbb_dbinsecureon == "1") {
 		$results = $phpbbdb->get_results($sql_query);
 	} else {
 		$results = $wpdb->get_results($sql_query);
 	}
 	
-		//Next build the recent (active) topics now
+	# Build the recent (active) topics now
 	if ($results){
 		
 		echo "<ul>";	
@@ -124,37 +122,38 @@
 		{
 			
 			echo "<li>";
-				//echo "$topic->post_text";
 			echo "<a ";
-			if ($OPENINNEWWIN == "1") { echo "target=\"_blank\""; }
+			
+			if ($prt_phpbb_newwin == "1") { echo "target=\"_blank\""; } // Enable open in new window feature.
+			
 			if ($prt_phpbb_latest_topic == "1") {
-				echo " href='" . $SITEURL . "/viewtopic.php?p=$topic->topic_last_post_id#p$topic->topic_last_post_id'";	
+				echo " href='" . $prt_phpbb_url . "/viewtopic.php?p=$topic->topic_last_post_id#p$topic->topic_last_post_id'";	
 			} else {
-				echo " href='" . $SITEURL . "/viewtopic.php?t=$topic->topic_id'"; 
+				echo " href='" . $prt_phpbb_url . "/viewtopic.php?t=$topic->topic_id'"; 
 			}
-			if ($prt_phpbb_body_as_tooltip == "1") {
-					//** fetch post body
-					//build query
-				$sql_query = "SELECT * FROM $POSTS_TABLE WHERE "; 
+			if ($prt_phpbb_body_as_tooltip == "1") { // Body tooltips are enabled <- Feature by Number3NL
+				
+				$sql_query = "SELECT * FROM $prt_phpbb_pt WHERE "; 
+				
 				if ($prt_phpbb_latest_topic == "1") { 
 					$sql_query .= "post_id=" . $topic->topic_last_post_id;
 				} else {
 					$sql_query .= "topic_id=" . $topic->topic_id;
 				}
 				$sql_query .= " LIMIT 1";
-					//run query
+
+				# Run Query
 				if ($prt_phpbb_dbinsecureon == "1") {
 					$post= $phpbbdb->get_row($sql_query);
 				} else {
 					$post = $wpdb->get_row($sql_query);
 				}
 				
-					//strip BBcodes from post
-	        	$post->post_text = preg_replace("(\[.+?\])is",'',$post->post_text);
-					//limit the quote from the body to xxx chars
-        		$post->post_text = substr($post->post_text,0,512)."..."; 
-	        	echo " title='" . $post->post_text . "' ";
-					//** and that's all folks
+	        	$post->post_text = preg_replace("(\[.+?\])is",'',$post->post_text); // strip BBcodes from post
+				$post->post_text = substr($post->post_text,0,512)."..."; //limit the quote from the body to xxx chars
+	        	
+				echo " title='" . $post->post_text . "' ";
+
 			}
 			echo ">";
 			
@@ -165,12 +164,12 @@
 			}
 			echo "</a>";
 			
-			if ($PHPBBDATE != "") {
+			if ($prt_phpbb_date != "") {
 				echo "<br />\n";
 				if ($prt_phpbb_latest_topic == "1") { 
-					echo "<small><i>" . date("$PHPBBDATE", $topic->topic_last_post_time) . "</i></small>\n";
+					echo "<small><i>" . date("$prt_phpbb_date", $topic->topic_last_post_time) . "</i></small>\n";
 				} else {
-					echo "<small><i>" . date("$PHPBBDATE", $topic->topic_time) . "</i></small>\n";
+					echo "<small><i>" . date("$prt_phpbb_date", $topic->topic_time) . "</i></small>\n";
 				}
 			}
 			
@@ -178,8 +177,9 @@
 		}
 		
 		echo "</ul>";
+		
 	} else {
-		echo "<h2> phpBB Error  -$TOPIC_TABLE </h2>";
+		echo "<h2> phpBB Error - $prt_phpbb_tt </h2>"; // No Results!
 	}
 	
 	if ($prt_phpbb_dbinsecureon != "1") {
