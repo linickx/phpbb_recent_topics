@@ -16,6 +16,8 @@
 	add_option('prt_phpbb_dbinsecureuid', __('phpbbuser', 'prt'));
 	add_option('prt_phpbb_dbinsecurepw', __('phpbbpass', 'prt'));
 	add_option('prt_phpbb_dbinsecurehost', __('localhost', 'prt'));
+	add_option('prt_phpbb_pt', __('phpbb_posts', 'prt'));
+	add_option('prt_phpbb_latest_topic', __('0', 'prt'));
 	
 	# If we've been submitted, then save :-)
 	if ('process' == $_POST['stage'])
@@ -23,28 +25,31 @@
 		update_option('prt_phpbb_db', $_POST['prt_phpbb_db']);
 		update_option('prt_phpbb_tt', $_POST['prt_phpbb_tt']);
 		update_option('prt_phpbb_ft', $_POST['prt_phpbb_ft']);
+		update_option('prt_phpbb_pt', $_POST['prt_phpbb_pt']);
 		update_option('prt_phpbb_url', $_POST['prt_phpbb_url']);
 		update_option('prt_phpbb_limit', $_POST['prt_phpbb_limit']);
 		update_option('prt_phpbb_date', $_POST['prt_phpbb_date']);
         update_option('prt_phpbb_exclued', $_POST['prt_phpbb_exclued']);
 		update_option('prt_phpbb_newwin', $_POST['prt_phpbb_newwin']);
+		update_option('prt_phpbb_latest_topic', $_POST['prt_phpbb_latest_topic']);
 		update_option('prt_phpbb_dbinsecureon', $_POST['prt_phpbb_dbinsecureon']);
 		update_option('prt_phpbb_dbinsecureuid', $_POST['prt_phpbb_dbinsecureuid']);
 		update_option('prt_phpbb_dbinsecurepw', $_POST['prt_phpbb_dbinsecurepw']);
 		update_option('prt_phpbb_dbinsecurehost', $_POST['prt_phpbb_dbinsecurehost']);
 	}
 	
-	
 	# When loading the form, fill in our old values....
 	
 	$prt_phpbb_db = stripslashes(get_option('prt_phpbb_db'));
 	$prt_phpbb_tt = stripslashes(get_option('prt_phpbb_tt'));
 	$prt_phpbb_ft = stripslashes(get_option('prt_phpbb_ft'));
+	$prt_phpbb_pt = stripslashes(get_option('prt_phpbb_pt'));
 	$prt_phpbb_url = stripslashes(get_option('prt_phpbb_url'));
 	$prt_phpbb_limit = stripslashes(get_option('prt_phpbb_limit'));
 	$prt_phpbb_date = stripslashes(get_option('prt_phpbb_date'));
 	$prt_phpbb_exclued = get_option('prt_phpbb_exclued');
 	$prt_phpbb_newwin = stripslashes(get_option('prt_phpbb_newwin'));
+	$prt_phpbb_latest_topic = stripslashes(get_option('prt_phpbb_latest_topic'));
 	$prt_phpbb_dbinsecureon = stripslashes(get_option('prt_phpbb_dbinsecureon'));
 	$prt_phpbb_dbinsecureuid = stripslashes(get_option('prt_phpbb_dbinsecureuid'));
 	$prt_phpbb_dbinsecurepw = stripslashes(get_option('prt_phpbb_dbinsecurepw'));
@@ -71,7 +76,6 @@
 			# Run The query
         	$results = $phpbbdb->get_results("SELECT forum_id,forum_name FROM $prt_phpbb_ft");
 		}
-		
 		
 		# Now print the admin form!
 	?>
@@ -120,6 +124,11 @@
 </td>
 </tr>
 <tr valign="top">
+<th scope="row"><?php _e('phpbb Posts Table Name') ?></th>
+<td><input name="prt_phpbb_pt" id="prt_phpbb_pt" class="regular-text" value="<?php echo $prt_phpbb_pt; ?>" />
+</td>
+</tr>
+<tr valign="top">
 <th scope="row"><?php _e('phpbb forum URL') ?></th>
 <td><input name="prt_phpbb_url" id="prt_phpbb_url" class="regular-text" value="<?php echo $prt_phpbb_url; ?>" />
 </td>
@@ -134,20 +143,35 @@
 <td><input name="prt_phpbb_date" id="prt_phpbb_date" class="regular-text" value="<?php echo $prt_phpbb_date; ?>" />
 <span class="description"> See <a href="http://codex.wordpress.org/Formatting_Date_and_Time">WP Codex Documentation on date formatting</a></span></td>
 </tr>
+
+<tr valign="top">
+<th scope="row"><?php _e('Show latest topic with posts') ?></th>
+<td>
+<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_latest_topic" value="1" <?php if ($prt_phpbb_latest_topic == "1") { echo "checked"; } ?>/></td></tr></table>
+</td>
+</tr>
+
+
+<tr valign="top">
+<th scope="row"><?php _e('Show body of post as tooltip') ?></th>
+<td>
+<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_body_as_tooltip" value="1" <?php if ($prt_phpbb_body_as_tooltip == "1") { echo "checked"; } ?>/></td></tr></table>
+</td>
+</tr>
 <?php
 	if ($results){
 	?>
 <tr valign="top">
 <th scope="row"><?php _e('Excluded Forums') ?></th>
 <td><table><?php foreach ($results as $forum) {
-	?><tr><td><?php echo $forum->forum_name;?></td><td><input type="checkbox" name="prt_phpbb_exclued[]" value="<?php echo $forum->forum_id;?>" <?php 
+	?><tr><td><?php echo $forum->forum_name;?></td><td><input type="checkbox" name="prt_phpbb_exclued[]" value="<?php echo $forum->forum_id;?>" <?php
 		if (is_array($prt_phpbb_exclued)) {
 			foreach ($prt_phpbb_exclued as $excluded) {
 				# Switch on Check Boxes!
 				if ($excluded == $forum->forum_id) {
 					echo "checked";
 				}
-			} 
+			}
 		} ?>/></td></tr><?php
 			} ?></table>
 </td>
