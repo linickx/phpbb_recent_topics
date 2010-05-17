@@ -71,7 +71,7 @@
 	# if $prt_phpbb_pt is set up empty :)
 	if ($prt_phpbb_pt == "") {
 		
-		$prt_phpbb_pt = "phpbb_topics";
+		$prt_phpbb_pt = "phpbb_posts";
 		
 	}
 	
