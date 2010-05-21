@@ -71,7 +71,9 @@
 			$wpdb->select($prt_phpbb_db);
 			
 			# Run The query
-        	$results = $wpdb->get_results("SELECT forum_id,forum_name FROM $prt_phpbb_ft");
+			$tt_results = $wpdb->get_results("SELECT * FROM $prt_phpbb_tt LIMIT 3"); // Topic Table Querey - check connectivity
+        	$ft_results = $wpdb->get_results("SELECT forum_id,forum_name FROM $prt_phpbb_ft"); // Forum Table Querey - for exclusions
+			$pt_results = $wpdb->get_results("SELECT * FROM $prt_phpbb_pt LIMIT 3"); // Posts Table Querey - to check recent posts functionaility
 			
         	# Connect back to wordpress :-)
         	$wpdb->select(DB_NAME);
@@ -80,13 +82,20 @@
 			# Make new DB Connection
 			$phpbbdb = new wpdb($prt_phpbb_dbinsecureuid, $prt_phpbb_dbinsecurepw, $prt_phpbb_db, $prt_phpbb_dbinsecurehos);
 			# Run The query
-        	$results = $phpbbdb->get_results("SELECT forum_id,forum_name FROM $prt_phpbb_ft");
+			$tt_results = $phpbbdb->get_results("SELECT * FROM $prt_phpbb_tt LIMIT 3"); // As above
+        	$ft_results = $phpbbdb->get_results("SELECT forum_id,forum_name FROM $prt_phpbb_ft"); 
+			$pt_results = $phpbbdb->get_results("SELECT * FROM $prt_phpbb_pt LIMIT 3"); 
 		}
 		
 		# Now print the admin form!
 	?>
 <div class="wrap">
 <h2><?php _e('phpBB Recent Topics') ?></h2>
+<?php
+	if (!$tt_results) {
+		echo "<div id='lnx_prt_warning' class='updated fade'><p><strong>".__('Database Error.')."</strong> ".sprintf(__('Connectivity to phpBB failed. See README for help'), "http://wordpress.org/extend/plugins/phpbb-recent-topics/")."</p></div>";
+	}
+	?>	
 <form name="form1" method="post" action="<?php echo $location ?>&amp;updated=true">
 <input type="hidden" name="stage" value="process" />
 <table width="100%" cellspacing="2" cellpadding="5" class="form-table">
@@ -98,7 +107,26 @@
 <tr valign="top">
 <th scope="row"><?php _e('Enable Insecure Database Connection') ?></th>
 <td>
-<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_dbinsecureon" value="1" <?php if ($prt_phpbb_dbinsecureon == "1") { echo "checked"; } ?>/><span class="description"> Only do this if you really have too! Please see README for more details</span></td></tr></table>
+<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_dbinsecureon" value="1" <?php if ($prt_phpbb_dbinsecureon == "1") { echo "checked"; } ?>/>
+<?php
+	if ($tt_results) {
+	?>
+<span class="description"><strong>Connectivity Estabilshed,</strong>
+		<?php if ($prt_phpbb_dbinsecureon == "1") {
+			echo " you use this at your own risk.";
+		} else {
+			echo " this option is not required.";
+		}	
+		?>
+</span>
+<?php
+	} else {
+	?>
+<span class="description"> Only do this if you really have too! Please see README for more details</span>
+<?php
+	}
+	?>
+</td></tr></table>
 </td>
 </tr>
 <?php if ($prt_phpbb_dbinsecureon == "1") { ?>
@@ -152,13 +180,23 @@
 <tr valign="top">
 <th scope="row"><?php _e('Sort Results by Post Date') ?></th>
 <td>
-<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_latest_topic" value="1" <?php if ($prt_phpbb_latest_topic == "1") { echo "checked"; } ?>/></td><td><span class="description">By default results are isorted by the Date of Topic <em>creation</em>, this will sort topics by <em>freshness</em>.</span></td></tr></table>
+<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_latest_topic" value="1" <?php if ($prt_phpbb_latest_topic == "1") { echo "checked"; } ?>/></td><td><span class="description">By default results are sorted by the Date of Topic <em>creation</em>, this will sort topics by <em>freshness</em>.</span></td></tr></table>
 </td>
 </tr>
 <tr valign="top">
 <th scope="row"><?php _e('Enable Tooltip') ?></th>
 <td>
+<?php
+	if ($pt_results) {
+	?>
 <table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_body_as_tooltip" value="1" <?php if ($prt_phpbb_body_as_tooltip == "1") { echo "checked"; } ?>/></td><td><span class="description"> The post content will be shown as a tooltip over the hyperlink.</span></td></tr></table>
+<?php
+	} else {
+	?>
+	Please add new GRANT permissions <code>`GRANT SELECT ON phpbb_database.phpbb_posts TO wp_user@localhost;`</code> <br /><span class="description">See README for more details</span>
+<?php
+	}
+	?>
 </td>
 </tr>
 <?php
@@ -174,11 +212,11 @@
 	}
 	?>
 <?php
-	if ($results){
+	if ($ft_results){
 	?>
 <tr valign="top">
 <th scope="row"><?php _e('Excluded Forums') ?></th>
-<td><table><?php foreach ($results as $forum) {
+<td><table><?php foreach ($ft_results as $forum) {
 	?><tr><td><?php echo $forum->forum_name;?></td><td><input type="checkbox" name="prt_phpbb_exclued[]" value="<?php echo $forum->forum_id;?>" <?php
 		if (is_array($prt_phpbb_exclued)) {
 			foreach ($prt_phpbb_exclued as $excluded) {
