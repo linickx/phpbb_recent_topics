@@ -29,13 +29,13 @@
 		update_option('prt_phpbb_ft', $_POST['prt_phpbb_ft']);
 		update_option('prt_phpbb_pt', $_POST['prt_phpbb_pt']);
 		update_option('prt_phpbb_url', $_POST['prt_phpbb_url']);
-		update_option('prt_phpbb_limit', $_POST['prt_phpbb_limit']);
+		update_option('prt_phpbb_limit', abs($_POST['prt_phpbb_limit']));
 		update_option('prt_phpbb_date', $_POST['prt_phpbb_date']);
-        update_option('prt_phpbb_exclued', $_POST['prt_phpbb_exclued']);
+		update_option('prt_phpbb_exclued', $_POST['prt_phpbb_exclued']);
 		update_option('prt_phpbb_newwin', $_POST['prt_phpbb_newwin']);
 		update_option('prt_phpbb_latest_topic', $_POST['prt_phpbb_latest_topic']);
 		update_option('prt_phpbb_body_as_tooltip', $_POST['prt_phpbb_body_as_tooltip']);
-		update_option('prt_phpbb_tooltipsize', $_POST['prt_phpbb_tooltipsize']);
+		update_option('prt_phpbb_tooltipsize', abs($_POST['prt_phpbb_tooltipsize']));
 		update_option('prt_phpbb_dbinsecureon', $_POST['prt_phpbb_dbinsecureon']);
 		update_option('prt_phpbb_dbinsecureuid', $_POST['prt_phpbb_dbinsecureuid']);
 		update_option('prt_phpbb_dbinsecurepw', $_POST['prt_phpbb_dbinsecurepw']);

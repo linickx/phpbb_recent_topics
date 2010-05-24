@@ -27,7 +27,6 @@
 			$LIMIT = 5;
 		}
 		
-		
 	}
 	
 	# Error Check $LIMIT...
@@ -37,6 +36,7 @@
 		
 	}
 	settype($LIMIT, "integer"); // No fractions jokers
+	$LIMIT = abs($LIMIT); //and no negative limits 
 	
 	# Error check $prt_phpbb_tooltipsize
 	if (!is_numeric($prt_phpbb_tooltipsize)) {
@@ -45,6 +45,7 @@
 		
 	}
 	settype($prt_phpbb_tooltipsize, "integer");
+	$prt_phpbb_tooltipsize = abs($prt_phpbb_tooltipsize); //prevent negative tooltipsizes 
 	
 	
 	# Check the $prt_phpbb_tt variable
@@ -64,7 +65,7 @@
 	# Check the $prt_phpbb_pt variable
 	if (is_null($prt_phpbb_pt)) {
 		
-		$prt_phpbb_tt = "phpbb_posts";
+		$prt_phpbb_pt = "phpbb_posts";
 		
 	}
 	
