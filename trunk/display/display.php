@@ -134,13 +134,13 @@
 	# Build the recent (active) topics now
 	if ($results){
 		
-		echo "<ul>";	
+		echo '<ul class="prt_ul" >';	
 		
 		# Loop away baby !
 		foreach ($results as $topic)
 		{
 			
-			echo "<li>";
+			echo '<li class="prt_li" >';
 			echo "<a ";
 			
 			if ($prt_phpbb_newwin == "1") { echo "target=\"_blank\""; } // Enable open in new window feature.
