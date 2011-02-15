@@ -111,7 +111,7 @@
 <?php
 	if ($tt_results) {
 	?>
-<span class="description"><strong>Connectivity Estabilshed,</strong>
+<span class="description"><strong>Connectivity Established,</strong>
 		<?php if ($prt_phpbb_dbinsecureon == "1") {
 			echo " you use this at your own risk.";
 		} else {
