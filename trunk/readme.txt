@@ -95,6 +95,9 @@ Yes, use the Insecure Connectivity method, and change the host to the IP address
 
 == Changelog ==
 
+= 0.6.1 =
+* WordPress 3.1.2 Testing
+
 = 0.6 =
 * Code by Number3NL
 ** PHPBB Recent Posts

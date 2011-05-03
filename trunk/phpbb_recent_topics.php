@@ -3,7 +3,7 @@
 	 Plugin Name: phpbb_recent_topics
 	 Plugin URI: http://www.linickx.com/archives/2998/phpbb_recent_topics-version-0-6
 	 Description: This plugin grabs your recent phpBB topics for you to display in wordpress.
-	 Version: 0.6
+	 Version: 0.6.1
 	 Author: Nick [LINICKX] Bettison
 	 Author URI: http://www.linickx.com
 	 */
