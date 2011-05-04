@@ -4,10 +4,20 @@
 	
 	add_action('admin_init', 'lnx_PRT_add_admin_init' );
 	add_action('admin_menu', 'lnx_PRT_add_admin_options');
+	add_action('contextual_help', 'lnx_PRT_help', 10, 3);
 	
 	function lnx_PRT_add_admin_options() {
 		
-		add_options_page('phpBB Recent Topics Options', 'phpBB Recent Topics', 'manage_options', 'phpbb-recent-topics/display/admin-options.php');
+		global $lnx_PRT_admin_hook;
+		
+		$lnx_PRT_admin_hook = add_options_page('phpBB Recent Topics Options', 'phpBB Recent Topics', 'manage_options' , 'phpbb-recent-topics' , 'lnx_PRT_display_admin_options' );
+	}
+	
+	function lnx_PRT_display_admin_options(){
+		
+		global $wpdb, $lnx_PRT_options;
+		
+		require_once(WP_PLUGIN_DIR . '/phpbb-recent-topics/display/admin-options.php' );
 		
 	}
 	
@@ -16,6 +26,19 @@
 		register_setting( 'lnx_PRT_options', 'lnx_PRT_options', 'lnx_PRT_validate_options' );
 		
 	}
+	
+	function lnx_PRT_help($contextual_help, $screen_id, $screen) {
+			
+		global $lnx_PRT_admin_hook;
+		
+		if ($screen_id == $lnx_PRT_admin_hook) {
+			
+			$contextual_help = file_get_contents(WP_PLUGIN_DIR . '/phpbb-recent-topics/display/admin-options-help.inc.php'); // the help html
+		}
+		
+		return $contextual_help;
+	}
+
 
 	function lnx_PRT_validate_options($input) { // Validate options...
 		

@@ -107,6 +107,7 @@ Yes, use the Insecure Connectivity method, and change the host to the IP address
 * Timezone/Off-Set fix (Reads +/- hours from WordPress Settings)
 * Localisation of date/time fix (http://plugins.trac.wordpress.org/ticket/1173)
 * Callback functionality
+* Contextual Help in the admin dashboard
 
 
 = 0.6 =
