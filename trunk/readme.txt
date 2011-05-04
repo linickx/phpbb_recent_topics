@@ -97,6 +97,13 @@ Yes, use the Insecure Connectivity method, and change the host to the IP address
 
 = 0.6.1 =
 * WordPress 3.1.2 Testing
+* CSS Styleable output
+* Plugin Options Modernisation
+** Collapse multiple options into an array
+** Implement register settings to close  http://plugins.trac.wordpress.org/ticket/1217
+** Implement upgrade.php to migrate all variable to new array form
+* Resolved: Missing argument 1 for phpbb_topics()
+* Code clean-up (Lots of changes)
 
 = 0.6 =
 * Code by Number3NL
