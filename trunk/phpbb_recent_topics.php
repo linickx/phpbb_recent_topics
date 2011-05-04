@@ -8,117 +8,104 @@
 	 Author URI: http://www.linickx.com
 	 */
 	
-	require_once(WP_PLUGIN_DIR . "/phpbb-recent-topics/upgrade.php"); // before we start, check for upgrades.
+	# before we start, check for upgrades.
+	require_once(WP_PLUGIN_DIR . "/phpbb-recent-topics/upgrade.php");
 	
-	$lnx_PRT_options = get_option('lnx_PRT_options'); // Plugin Options
+	# Load Plugin Options from WP DB
+	$lnx_PRT_options = get_option('lnx_PRT_options'); 
 	
-	if (is_admin()) { // load admin stuff if we are an admin.
+	# Only run admin code,if in admin screen.
+	if (is_admin()) { 
 		include_once(WP_PLUGIN_DIR . "/phpbb-recent-topics/admin.php");
 	}
 	
+	# Go!
 	if ($lnx_PRT_options) { // only move on if we have options..
 		
+		add_action('wp_head', 'DisplayPRTHeader'); // Hook into the WP Header
 		
-			// The path to the plugin 
+		function DisplayPRTHeader() { // Filter the post content
+			
+			global $post;
+			
+			add_filter('the_content', 'DisplayPRTMagicFilter');
+		} 
 		
-		define('PRTPLUGINPATH', (DIRECTORY_SEPARATOR != '/') ? str_replace(DIRECTORY_SEPARATOR, '/', dirname(__FILE__)) : dirname(__FILE__));
-		/* * The base class */
-		class phpbbRecentTopics { 
-			/* * The boostrap function */
-			function bootstrap() { 
-					// Add the installation and uninstallation hooks 
-				$file = PRTPLUGINPATH . '/' . basename(__FILE__);
-				
-					// Add the actions 
-				add_action('wp_head', array('phpbbRecentTopics', 'DisplayPRTHeader'));
-				
-			} 
+		function DisplayPRTMagicFilter($content) {  // Replace magic text with list of topics
 			
-			/* * The function to check for the presence of a contact form and link to it's CSS if required */
-			function DisplayPRTHeader() { 
-				global $post;
-				
-					// Add the content filter 
-				add_filter('the_content', array('phpbbRecentTopics', 'DisplayPRTMagicFilter'));
-			} 
-			/* * The function to display the contact form */
-			function DisplayPRTMagicFilter($content) { 
-				return str_replace('{phpbb_recent_topics}', phpbbRecentTopics::DisplayPRT(), $content);
-			} 
-			/* * The function to get the contact form's markup */
-			function DisplayPRT() { 
-				
-					// Start the cache 
-				ob_start();
-					// Add the contact form 
-				require(PRTPLUGINPATH . '/display/display.php');
-					// Get the markup 
-				$PRT_html = ob_get_contents();
-					// Cleanup 
-				ob_end_clean();
-				return $PRT_html;
-			} 
-			
-			
-			
+			return str_replace('{phpbb_recent_topics}', DisplayPRT(), $content);
 		} 
 		
 		
-		phpbbRecentTopics::bootstrap();
+		function DisplayPRT() {  // The standard display function
+			
+			ob_start(); // Start the cache 
+			
+			require(WP_PLUGIN_DIR . "/phpbb-recent-topics/display/display.php"); // run my code.
+			
+			$PRT_html = ob_get_contents();
+			
+			ob_end_clean(); // clean cache
+			
+			return $PRT_html; // return output
+		} 
 		
-			// legacy sidebar function
+		# Legacy function for side bar
 		function phpbb_topics($LIMIT = "") {
-			require(PRTPLUGINPATH . '/display/display.php');
+			
+			require(WP_PLUGIN_DIR . "/phpbb-recent-topics/display/display.php");
 		}
 		
-		
-			// Wiget functions...
-		
+		# New sidebar widget (options)
 		function wiget_options_phpbb_recent_topics() {
 			
-			$options = $newoptions = get_option('prt_widget');
+			$options = $newoptions = get_option('prt_widget'); // widget options
+			
 			if ( $_POST["prt-submit"] ) {
 				$newoptions['title'] = strip_tags(stripslashes($_POST["prt-title"]));
 			}
+			
 			if ( $options != $newoptions ) {
 				$options = $newoptions;
 				update_option('prt_widget', $options);
 			}
+			
 			$title = attribute_escape($options['title']);
 			?>
 <p><label for="prt-title"><?php _e('Title:'); ?> <input class="widefat" id="prt-title" name="prt-title" type="text" value="<?php echo $title; ?>" /></label></p>
 <input type="hidden" id="prt-submit" name="prt-submit" value="1" />
 <?php
-	}
+		}
 	
-	function widget_phpbb_recent_topics($args) {
+		# New sidebar widget (display)
+		function widget_phpbb_recent_topics($args) {
+			
+			# Credits to http://toni.uebernickel.info/entwicklung/wordpress/phpbb-recent-topics-widget/
+			# for pointing out my mistake!!
+			
+			extract($args); // get variables
+			$options = get_option('prt_widget'); // retrieve title
+			$title = stripslashes($options['title']);
+			
+			echo $before_widget, $before_title, $title, $after_title;
+			
+			require(WP_PLUGIN_DIR . "/phpbb-recent-topics/display/display.php");
+			
+			echo $after_widget;
+		}
 		
-		# Credits to http://toni.uebernickel.info/entwicklung/wordpress/phpbb-recent-topics-widget/
-		# for pointing out my mistake!!
+		# Widget init function (for action below).
+		function phpbb_recent_topics_init_widget() {
+			if (!function_exists('register_sidebar_widget'))
+				
+				return;
+			
+			register_sidebar_widget('phpBB Recent Topics','widget_phpbb_recent_topics');
+			register_widget_control('phpBB Recent Topics', 'wiget_options_phpbb_recent_topics', 300, 100);
+		}
 		
-			// get variables
-		extract($args);
-			// retrieve title
-		$options = get_option('prt_widget');
-		$title = stripslashes($options['title']);
-		
-		echo $before_widget, $before_title, $title, $after_title;
-		
-		require(PRTPLUGINPATH . '/display/display.php');
-		
-		echo $after_widget;
-	}
-	
-	function phpbb_recent_topics_init_widget() {
-		if (!function_exists('register_sidebar_widget'))
-			return;
-		register_sidebar_widget('phpBB Recent Topics','widget_phpbb_recent_topics');
-		register_widget_control('phpBB Recent Topics', 'wiget_options_phpbb_recent_topics', 300, 100);
-	}
-	
-	
-	# Delay plugin execution until sidebar is loaded
-	add_action('widgets_init', 'phpbb_recent_topics_init_widget');
+		# Delay plugin execution until sidebar is loaded
+		add_action('widgets_init', 'phpbb_recent_topics_init_widget');
 	
 	}
 	
