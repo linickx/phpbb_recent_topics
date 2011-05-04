@@ -105,6 +105,8 @@ Yes, use the Insecure Connectivity method, and change the host to the IP address
 * Resolved: Missing argument 1 for phpbb_topics()
 * Code clean-up (Lots of changes)
 * Timezone/Off-Set fix (Reads +/- hours from WordPress Settings)
+* Localisation of date/time fix (http://plugins.trac.wordpress.org/ticket/1173)
+
 
 = 0.6 =
 * Code by Number3NL

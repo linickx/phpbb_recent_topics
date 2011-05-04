@@ -140,7 +140,7 @@
 					$phpbb_time = $topic->topic_time + $offset;
 				}
 				
-				echo "<small><i>" . date("$lnx_PRT_options[prt_phpbb_date]", $phpbb_time) . "</i></small>\n";
+				echo "<small><i>" . mysql2date("$lnx_PRT_options[prt_phpbb_date]", $phpbb_time) . "</i></small>\n";
 			}
 			
 			echo "</li>";
