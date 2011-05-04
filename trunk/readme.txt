@@ -104,6 +104,7 @@ Yes, use the Insecure Connectivity method, and change the host to the IP address
 ** Implement upgrade.php to migrate all variable to new array form
 * Resolved: Missing argument 1 for phpbb_topics()
 * Code clean-up (Lots of changes)
+* Timezone/Off-Set fix (Reads +/- hours from WordPress Settings)
 
 = 0.6 =
 * Code by Number3NL

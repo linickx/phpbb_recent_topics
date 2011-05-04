@@ -130,12 +130,17 @@
 			echo "</a>";
 			
 			if ($lnx_PRT_options['prt_phpbb_date'] != "") {
+				
+				$offset = 3600 * get_option('gmt_offset');
 				echo "<br />\n";
+				
 				if ($lnx_PRT_options['prt_phpbb_latest_topic'] == "1") { 
-					echo "<small><i>" . date("$lnx_PRT_options[prt_phpbb_date]", $topic->topic_last_post_time) . "</i></small>\n";
+					$phpbb_time = $topic->topic_last_post_time + $offset;
 				} else {
-					echo "<small><i>" . date("$lnx_PRT_options[prt_phpbb_date]", $topic->topic_time) . "</i></small>\n";
+					$phpbb_time = $topic->topic_time + $offset;
 				}
+				
+				echo "<small><i>" . date("$lnx_PRT_options[prt_phpbb_date]", $phpbb_time) . "</i></small>\n";
 			}
 			
 			echo "</li>";
