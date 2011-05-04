@@ -67,7 +67,7 @@
 		phpbbRecentTopics::bootstrap();
 		
 			// legacy sidebar function
-		function phpbb_topics($LIMIT) {
+		function phpbb_topics($LIMIT = "") {
 			require(PRTPLUGINPATH . '/display/display.php');
 		}
 		
