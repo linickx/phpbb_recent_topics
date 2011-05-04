@@ -28,16 +28,12 @@
 			function bootstrap() { 
 					// Add the installation and uninstallation hooks 
 				$file = PRTPLUGINPATH . '/' . basename(__FILE__);
-				register_activation_hook($file, array('phpbbRecentTopics', 'install'));
-				register_deactivation_hook($file, array('phpbbRecentTopics', 'uninstall'));
+				
 					// Add the actions 
 				add_action('wp_head', array('phpbbRecentTopics', 'DisplayPRTHeader'));
 				
 			} 
-			/* * The installation function */
-			function install() { } 
-			/* * The uninstallation function */
-			function uninstall() { } 
+			
 			/* * The function to check for the presence of a contact form and link to it's CSS if required */
 			function DisplayPRTHeader() { 
 				global $post;
