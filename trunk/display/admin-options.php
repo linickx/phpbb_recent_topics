@@ -1,90 +1,60 @@
 <?php
 	
+	# New install..
+	
+	if (!$lnx_PRT_options) {
+		
+		$lnx_PRT_options = array(); // Create options array....
+		
+		$lnx_PRT_options['prt_phpbb_db'] = "";
+		$lnx_PRT_options['prt_phpbb_tt'] = "phpbb_topics";
+		$lnx_PRT_options['prt_phpbb_ft'] = "phpbb_forums";
+		$lnx_PRT_options['prt_phpbb_pt'] = "phpbb_posts";
+		$lnx_PRT_options['prt_phpbb_url'] = "";
+		$lnx_PRT_options['prt_phpbb_limit'] = "5";
+		$lnx_PRT_options['prt_phpbb_date'] = "d/M/y - g:i a";
+		$lnx_PRT_options['prt_phpbb_exclued'] = array(0);
+		$lnx_PRT_options['prt_phpbb_newwin'] = "0";
+		$lnx_PRT_options['prt_phpbb_latest_topic'] = "0";
+		$lnx_PRT_options['prt_phpbb_body_as_tooltip'] = "0";
+		$lnx_PRT_options['prt_phpbb_tooltipsize'] = "512";
+		$lnx_PRT_options['prt_phpbb_dbinsecureon'] = "0";
+		$lnx_PRT_options['prt_phpbb_dbinsecureuid'] = "phpbbuser";
+		$lnx_PRT_options['prt_phpbb_dbinsecurepw'] = "phpbbpass";
+		$lnx_PRT_options['prt_phpbb_dbinsecurehost'] = "localhost";
+		
+		update_option('lnx_PRT_options', $lnx_PRT_options); // Save new options array to db.
+		
+	}
+	
 	# Where am I ?
 	$location = get_option('siteurl') . '/wp-admin/admin.php?page=phpbb-recent-topics/display/admin-options.php';
 	
-	# Setup our phpbb Settings.
-	add_option('prt_phpbb_db', __('', 'prt'));
-	add_option('prt_phpbb_tt', __('phpbb_topics', 'prt'));
-	add_option('prt_phpbb_url', __('', 'prt'));
-	add_option('prt_phpbb_limit', __('5', 'prt'));
-	add_option('prt_phpbb_date', __('d/M/y - g:i a', 'prt'));
-	add_option('prt_phpbb_exclued',array(0));
-	add_option('prt_phpbb_ft', __('phpbb_forums', 'prt'));
-	add_option('prt_phpbb_newwin', __('0', 'prt'));
-	add_option('prt_phpbb_dbinsecureon', __('0', 'prt'));
-	add_option('prt_phpbb_dbinsecureuid', __('phpbbuser', 'prt'));
-	add_option('prt_phpbb_dbinsecurepw', __('phpbbpass', 'prt'));
-	add_option('prt_phpbb_dbinsecurehost', __('localhost', 'prt'));
-	add_option('prt_phpbb_pt', __('phpbb_posts', 'prt'));
-	add_option('prt_phpbb_latest_topic', __('0', 'prt'));
-	add_option('prt_phpbb_body_as_tooltip', __('0', 'prt'));
-	add_option('prt_phpbb_tooltipsize', __('512', 'prt'));
-	
-	# If we've been submitted, then save :-)
-	if ('process' == $_POST['stage'])
-	{
-		update_option('prt_phpbb_db', $_POST['prt_phpbb_db']);
-		update_option('prt_phpbb_tt', $_POST['prt_phpbb_tt']);
-		update_option('prt_phpbb_ft', $_POST['prt_phpbb_ft']);
-		update_option('prt_phpbb_pt', $_POST['prt_phpbb_pt']);
-		update_option('prt_phpbb_url', $_POST['prt_phpbb_url']);
-		update_option('prt_phpbb_limit', abs($_POST['prt_phpbb_limit']));
-		update_option('prt_phpbb_date', $_POST['prt_phpbb_date']);
-		update_option('prt_phpbb_exclued', $_POST['prt_phpbb_exclued']);
-		update_option('prt_phpbb_newwin', $_POST['prt_phpbb_newwin']);
-		update_option('prt_phpbb_latest_topic', $_POST['prt_phpbb_latest_topic']);
-		update_option('prt_phpbb_body_as_tooltip', $_POST['prt_phpbb_body_as_tooltip']);
-		update_option('prt_phpbb_tooltipsize', abs($_POST['prt_phpbb_tooltipsize']));
-		update_option('prt_phpbb_dbinsecureon', $_POST['prt_phpbb_dbinsecureon']);
-		update_option('prt_phpbb_dbinsecureuid', $_POST['prt_phpbb_dbinsecureuid']);
-		update_option('prt_phpbb_dbinsecurepw', $_POST['prt_phpbb_dbinsecurepw']);
-		update_option('prt_phpbb_dbinsecurehost', $_POST['prt_phpbb_dbinsecurehost']);
-	}
-	
-	# When loading the form, fill in our old values....
-	
-	$prt_phpbb_db = stripslashes(get_option('prt_phpbb_db'));
-	$prt_phpbb_tt = stripslashes(get_option('prt_phpbb_tt'));
-	$prt_phpbb_ft = stripslashes(get_option('prt_phpbb_ft'));
-	$prt_phpbb_pt = stripslashes(get_option('prt_phpbb_pt'));
-	$prt_phpbb_url = stripslashes(get_option('prt_phpbb_url'));
-	$prt_phpbb_limit = stripslashes(get_option('prt_phpbb_limit'));
-	$prt_phpbb_date = stripslashes(get_option('prt_phpbb_date'));
-	$prt_phpbb_exclued = get_option('prt_phpbb_exclued');
-	$prt_phpbb_newwin = stripslashes(get_option('prt_phpbb_newwin'));
-	$prt_phpbb_latest_topic = stripslashes(get_option('prt_phpbb_latest_topic'));
-	$prt_phpbb_body_as_tooltip = stripslashes(get_option('prt_phpbb_body_as_tooltip'));
-	$prt_phpbb_tooltipsize = stripslashes(get_option('prt_phpbb_tooltipsize'));
-	$prt_phpbb_dbinsecureon = stripslashes(get_option('prt_phpbb_dbinsecureon'));
-	$prt_phpbb_dbinsecureuid = stripslashes(get_option('prt_phpbb_dbinsecureuid'));
-	$prt_phpbb_dbinsecurepw = stripslashes(get_option('prt_phpbb_dbinsecurepw'));
-	$prt_phpbb_dbinsecurehost = stripslashes(get_option('prt_phpbb_dbinsecurehost'));
 	
 	# Only Allow Admins Access
 	if (current_user_can('level_10')) {
 		
 		# How do we connect to phpbb?
-		if ($prt_phpbb_dbinsecureon != "1") {
+		if ($lnx_PRT_options['prt_phpbb_dbinsecureon'] != "1") {
 			
 			# COnnect to phpBB and get a list of forums
-			$wpdb->select($prt_phpbb_db);
+			$wpdb->select($lnx_PRT_options['prt_phpbb_db']);
 			
 			# Run The query
-			$tt_results = $wpdb->get_results("SELECT * FROM $prt_phpbb_tt LIMIT 3"); // Topic Table Querey - check connectivity
-        	$ft_results = $wpdb->get_results("SELECT forum_id,forum_name FROM $prt_phpbb_ft"); // Forum Table Querey - for exclusions
-			$pt_results = $wpdb->get_results("SELECT * FROM $prt_phpbb_pt LIMIT 3"); // Posts Table Querey - to check recent posts functionaility
+			$tt_results = $wpdb->get_results("SELECT * FROM $lnx_PRT_options[prt_phpbb_tt] LIMIT 3"); // Topic Table Querey - check connectivity
+        	$ft_results = $wpdb->get_results("SELECT forum_id,forum_name FROM $lnx_PRT_options[prt_phpbb_ft]"); // Forum Table Querey - for exclusions
+			$pt_results = $wpdb->get_results("SELECT * FROM $lnx_PRT_options[prt_phpbb_pt] LIMIT 3"); // Posts Table Querey - to check recent posts functionaility
 			
         	# Connect back to wordpress :-)
         	$wpdb->select(DB_NAME);
 			
 		} else {
 			# Make new DB Connection
-			$phpbbdb = new wpdb($prt_phpbb_dbinsecureuid, $prt_phpbb_dbinsecurepw, $prt_phpbb_db, $prt_phpbb_dbinsecurehos);
+			$phpbbdb = new wpdb($lnx_PRT_options['prt_phpbb_dbinsecureuid'], $lnx_PRT_options['prt_phpbb_dbinsecurepw'], $lnx_PRT_options['prt_phpbb_db'], $prt_phpbb_dbinsecurehos);
 			# Run The query
-			$tt_results = $phpbbdb->get_results("SELECT * FROM $prt_phpbb_tt LIMIT 3"); // As above
-        	$ft_results = $phpbbdb->get_results("SELECT forum_id,forum_name FROM $prt_phpbb_ft"); 
-			$pt_results = $phpbbdb->get_results("SELECT * FROM $prt_phpbb_pt LIMIT 3"); 
+			$tt_results = $phpbbdb->get_results("SELECT * FROM $lnx_PRT_options[prt_phpbb_tt] LIMIT 3"); // As above
+        	$ft_results = $phpbbdb->get_results("SELECT forum_id,forum_name FROM $lnx_PRT_options[prt_phpbb_ft]"); 
+			$pt_results = $phpbbdb->get_results("SELECT * FROM $lnx_PRT_options[prt_phpbb_pt] LIMIT 3"); 
 		}
 		
 		# Now print the admin form!
@@ -96,23 +66,26 @@
 		echo "<div id='lnx_prt_warning' class='updated fade'><p><strong>".__('Database Error.')."</strong> ".sprintf(__('Connectivity to phpBB failed. See README for help'), "http://wordpress.org/extend/plugins/phpbb-recent-topics/")."</p></div>";
 	}
 	?>	
-<form name="form1" method="post" action="<?php echo $location ?>&amp;updated=true">
-<input type="hidden" name="stage" value="process" />
+<form method="post" action="options.php">
+<?php
+	settings_fields('lnx_PRT_options');
+	?>
+
 <table width="100%" cellspacing="2" cellpadding="5" class="form-table">
 <tr valign="top">
 <th scope="row"><?php _e('phpbb MySQL Database Name') ?></th>
-<td><input name="prt_phpbb_db" id="prt_phpbb_db" class="regular-text" value="<?php echo $prt_phpbb_db; ?>" />
+<td><input class="regular-text" name="lnx_PRT_options[prt_phpbb_db]" value="<?php echo $lnx_PRT_options['prt_phpbb_db']; ?>" />
 </td>
 </tr>
 <tr valign="top">
 <th scope="row"><?php _e('Enable Insecure Database Connection') ?></th>
 <td>
-<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_dbinsecureon" value="1" <?php if ($prt_phpbb_dbinsecureon == "1") { echo "checked"; } ?>/>
+<table><tr><td>Enable</td><td><input type="checkbox" name="lnx_PRT_options[prt_phpbb_dbinsecureon]" value="1" <?php if ($lnx_PRT_options['prt_phpbb_dbinsecureon'] == "1") { echo "checked"; } ?>/>
 <?php
 	if ($tt_results) {
 	?>
 <span class="description"><strong>Connectivity Established,</strong>
-		<?php if ($prt_phpbb_dbinsecureon == "1") {
+		<?php if ($lnx_PRT_options['prt_phpbb_dbinsecureon'] == "1") {
 			echo " you use this at your own risk.";
 		} else {
 			echo " this option is not required.";
@@ -129,58 +102,58 @@
 </td></tr></table>
 </td>
 </tr>
-<?php if ($prt_phpbb_dbinsecureon == "1") { ?>
+<?php if ($lnx_PRT_options['prt_phpbb_dbinsecureon'] == "1") { ?>
 <tr valign="top">
 <th scope="row"><?php _e('phpbb MySQL Database UserName') ?></th>
-<td><input name="prt_phpbb_dbinsecureuid" id="prt_phpbb_dbinsecureuid" class="regular-text" value="<?php echo $prt_phpbb_dbinsecureuid; ?>" />
+<td><input class="regular-text" name="lnx_PRT_options[prt_phpbb_dbinsecureuid]" value="<?php echo $lnx_PRT_options['prt_phpbb_dbinsecureuid']; ?>" />
 </td>
 </tr>
 <tr valign="top">
 <th scope="row"><?php _e('phpbb MySQL Database Password') ?></th>
-<td><input name="prt_phpbb_dbinsecurepw" id="prt_phpbb_dbinsecurepw" class="regular-text" value="<?php echo $prt_phpbb_dbinsecurepw; ?>" />
+<td><input class="regular-text" name="lnx_PRT_options[prt_phpbb_dbinsecurepw]" value="<?php echo $lnx_PRT_options['prt_phpbb_dbinsecurepw']; ?>" />
 </td>
 </tr>
 <tr valign="top">
 <th scope="row"><?php _e('phpbb MySQL Server') ?></th>
-<td><input name="prt_phpbb_dbinsecurehost" id="prt_phpbb_dbinsecurehost" class="regular-text" value="<?php echo $prt_phpbb_dbinsecurehost; ?>" />
+<td><input class="regular-text" name="lnx_PRT_options[prt_phpbb_dbinsecurehost]" value="<?php echo $lnx_PRT_options['prt_phpbb_dbinsecurehost']; ?>" />
 </td>
 </tr>
 
 <?php } ?>
 <tr valign="top">
 <th scope="row"><?php _e('phpbb Topics Table Name') ?></th>
-<td><input name="prt_phpbb_tt" id="prt_phpbb_tt" class="regular-text" value="<?php echo $prt_phpbb_tt; ?>" />
+<td><input class="regular-text" name="lnx_PRT_options[prt_phpbb_tt]" value="<?php echo $lnx_PRT_options['prt_phpbb_tt']; ?>" />
 </td>
 </tr>
 <tr valign="top">
 <th scope="row"><?php _e('phpbb Forums Table Name') ?></th>
-<td><input name="prt_phpbb_ft" id="prt_phpbb_ft" class="regular-text" value="<?php echo $prt_phpbb_ft; ?>" />
+<td><input class="regular-text" name="lnx_PRT_options[prt_phpbb_ft]" value="<?php echo $lnx_PRT_options['prt_phpbb_ft']; ?>" />
 </td>
 </tr>
 <tr valign="top">
 <th scope="row"><?php _e('phpbb Posts Table Name') ?></th>
-<td><input name="prt_phpbb_pt" id="prt_phpbb_pt" class="regular-text" value="<?php echo $prt_phpbb_pt; ?>" />
+<td><input class="regular-text" name="lnx_PRT_options[prt_phpbb_pt]" value="<?php echo $lnx_PRT_options['prt_phpbb_pt']; ?>" />
 </td>
 </tr>
 <tr valign="top">
 <th scope="row"><?php _e('phpbb forum URL') ?></th>
-<td><input name="prt_phpbb_url" id="prt_phpbb_url" class="regular-text" value="<?php echo $prt_phpbb_url; ?>" />
+<td><input class="regular-text" name="lnx_PRT_options[prt_phpbb_url]" value="<?php echo $lnx_PRT_options['prt_phpbb_url']; ?>" />
 </td>
 </tr>
 <tr valign="top">
 <th scope="row"><?php _e('Number of Topics to show') ?></th>
-<td><input name="prt_phpbb_limit" id="prt_phpbb_limit" class="regular-text" value="<?php echo $prt_phpbb_limit; ?>" />
+<td><input name="lnx_PRT_options[prt_phpbb_limit]" value="<?php echo $lnx_PRT_options['prt_phpbb_limit']; ?>" />
 </td>
 </tr>
 <tr valign="top">
 <th scope="row"><?php _e('Date and Time Formmating') ?></th>
-<td><input name="prt_phpbb_date" id="prt_phpbb_date" class="regular-text" value="<?php echo $prt_phpbb_date; ?>" />
+<td><input name="lnx_PRT_options[prt_phpbb_date]" value="<?php echo $lnx_PRT_options['prt_phpbb_date']; ?>" />
 <span class="description"> See <a href="http://codex.wordpress.org/Formatting_Date_and_Time">WP Codex Documentation on date formatting</a></span></td>
 </tr>
 <tr valign="top">
 <th scope="row"><?php _e('Sort Results by Post Date') ?></th>
 <td>
-<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_latest_topic" value="1" <?php if ($prt_phpbb_latest_topic == "1") { echo "checked"; } ?>/></td><td><span class="description">By default results are sorted by the Date of Topic <em>creation</em>, this will sort topics by <em>freshness</em>.</span></td></tr></table>
+<table><tr><td>Enable</td><td><input type="checkbox" name="lnx_PRT_options[prt_phpbb_latest_topic]" value="1" <?php if ($lnx_PRT_options['prt_phpbb_latest_topic'] == "1") { echo "checked"; } ?>/></td><td><span class="description">By default results are sorted by the Date of Topic <em>creation</em>, this will sort topics by <em>freshness</em>.</span></td></tr></table>
 </td>
 </tr>
 <tr valign="top">
@@ -189,7 +162,7 @@
 <?php
 	if ($pt_results) {
 	?>
-<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_body_as_tooltip" value="1" <?php if ($prt_phpbb_body_as_tooltip == "1") { echo "checked"; } ?>/></td><td><span class="description"> The post content will be shown as a tooltip over the hyperlink.</span></td></tr></table>
+<table><tr><td>Enable</td><td><input type="checkbox" name="lnx_PRT_options[prt_phpbb_body_as_tooltip]" value="1" <?php if ($lnx_PRT_options['prt_phpbb_body_as_tooltip'] == "1") { echo "checked"; } ?>/></td><td><span class="description"> The post content will be shown as a tooltip over the hyperlink.</span></td></tr></table>
 <?php
 	} else {
 	?>
@@ -200,11 +173,11 @@
 </td>
 </tr>
 <?php
-	if ($prt_phpbb_body_as_tooltip == "1") {
+	if ($lnx_PRT_options['prt_phpbb_body_as_tooltip'] == "1") {
 	?>
 <tr valign="top">
 <th scope="row"><?php _e('Tooltip Size') ?></th>
-<td><input name="prt_phpbb_tooltipsize" id="prt_phpbb_tooltipsize" class="regular-text" value="<?php echo $prt_phpbb_tooltipsize; ?>" />
+<td><input name="lnx_PRT_options[prt_phpbb_tooltipsize]" value="<?php echo $lnx_PRT_options['prt_phpbb_tooltipsize']; ?>" />
 <span class="description"> How many characters show we show in the tooltip bubble? </span>
 </td>
 </tr>
@@ -216,12 +189,12 @@
 	?>
 <tr valign="top">
 <th scope="row"><?php _e('Excluded Forums') ?></th>
-<td><table><?php foreach ($ft_results as $forum) {
-	?><tr><td><?php echo $forum->forum_name;?></td><td><input type="checkbox" name="prt_phpbb_exclued[]" value="<?php echo $forum->forum_id;?>" <?php
-		if (is_array($prt_phpbb_exclued)) {
-			foreach ($prt_phpbb_exclued as $excluded) {
+<td><table><?php foreach ($ft_results as $phpbbforum) {
+	?><tr><td><?php echo $phpbbforum->forum_name;?></td><td><input type="checkbox" name="lnx_PRT_options[prt_phpbb_exclued][<?php echo $phpbbforum->forum_id;?>]" value="<?php echo $phpbbforum->forum_id;?>" <?php
+		if (is_array($lnx_PRT_options['prt_phpbb_exclued'])) {
+			foreach ($lnx_PRT_options['prt_phpbb_exclued'] as $excluded) {
 				# Switch on Check Boxes!
-				if ($excluded == $forum->forum_id) {
+				if ($excluded == $phpbbforum->forum_id) {
 					echo "checked";
 				}
 			}
@@ -245,13 +218,13 @@
 <tr valign="top">
 <th scope="row"><?php _e('Open link in new window') ?></th>
 <td>
-<table><tr><td>Enable</td><td><input type="checkbox" name="prt_phpbb_newwin" value="1" <?php if ($prt_phpbb_newwin == "1") { echo "checked"; } ?>/></td></tr></table>
+<table><tr><td>Enable</td><td><input type="checkbox" name="lnx_PRT_options[prt_phpbb_newwin]" value="1" <?php if ($lnx_PRT_options['prt_phpbb_newwin'] == "1") { echo "checked"; } ?>/></td></tr></table>
 </td>
 </tr>
 
 </table>
 <p class="submit">
-<input type="submit" name="Submit" value="<?php _e('Update Options', 'prt') ?> &raquo;" />
+ <input type="submit" class="button-primary" value="<?php _e('Save Options') ?>" />
 </p>
 </form>
 <hr />
