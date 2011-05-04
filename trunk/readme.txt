@@ -106,6 +106,7 @@ Yes, use the Insecure Connectivity method, and change the host to the IP address
 * Code clean-up (Lots of changes)
 * Timezone/Off-Set fix (Reads +/- hours from WordPress Settings)
 * Localisation of date/time fix (http://plugins.trac.wordpress.org/ticket/1173)
+* Callback functionality
 
 
 = 0.6 =
@@ -190,3 +191,40 @@ $dbhost = phpbb MySQL Server
 `
 
 Click update, and you should be connected!
+
+== The Callback function ==
+
+To allow users to customize what is / can be displayed a callback function `phpbb_topics_callback` has been implemented.
+
+In ticket 1216 (http://plugins.trac.wordpress.org/ticket/1216) phil suggested that the forum name should be displayed within the topic list; the following code is an example use of the new callback function and should be added to your themes functions.php
+
+
+`
+function phpbb_topics_callback($phpbbdb, $wpdb, $lnx_PRT_options, $topic) {
+
+        // GET FORUM WHICH POST IS IN - Phil Ewels, 26/09/2010
+        $sql_query = "SELECT * FROM $lnx_PRT_options[prt_phpbb_ft] WHERE forum_id=" . $topic->forum_id. " LIMIT 1";
+
+        # Run Query
+        if ($lnx_PRT_options['prt_phpbb_dbinsecureon'] == "1") {
+                $forum = $phpbbdb->get_row($sql_query);
+        } else {
+                $forum = $wpdb->get_row($sql_query);
+        }
+
+        echo "<br /><small>" . $forum->forum_name . " </small>";
+
+}
+`
+
+The following variables can be used within your callback function:
+* $wpdb 
+** If using Secure Connectivity this is a connection to your PHPBB Database
+** If using Insecure Connectivity this is the standard WordPress Database
+* $phpbbdb
+** If using Secure Connectivity this will be NULL
+** If using Insecure Connectivity this is a connection to your PHPBB Database
+* $lnx_PRT_options
+** An array of the phpbb-recent-topics settings
+* $topic
+** The current topic, with associated attributes.

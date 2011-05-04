@@ -143,6 +143,10 @@
 				echo "<small><i>" . mysql2date("$lnx_PRT_options[prt_phpbb_date]", $phpbb_time) . "</i></small>\n";
 			}
 			
+			if (function_exists('phpbb_topics_callback')) {
+				phpbb_topics_callback($phpbbdb, $wpdb, $lnx_PRT_options, $topic);
+			}
+			
 			echo "</li>";
 		}
 		
