@@ -158,6 +158,10 @@ Yes, use the Insecure Connectivity method, and change the host to the IP address
 = 0.1 =
 * First Release :)
 
+== Upgrade Notice ==
+
+This upgrade is optional.
+
 == A bit about Database configuration. ==
 If wordpress & phpBB share a DB already then set $PHPBBDB to DB_NAME and everything will be fine, else you.re going to need to GRANT the wordpress user read access to phpBB. (If you really need to, you can store the phpbb databse credential in the plugin using the "Insecure" connectivity method.)
 
