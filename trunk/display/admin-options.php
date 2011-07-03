@@ -241,7 +241,7 @@
 	}
 	?>
 </ul>
-<p><small><a href="http://www.linickx.com/archives/tag/phpbb_recent_topics/feed">Subcribe to this feed</a></small></p>
+<p><small><a href="http://www.linickx.com/tag/phpbb_recent_topics/feed">Subcribe to this feed</a></small></p>
 
 </div>
 <?php
