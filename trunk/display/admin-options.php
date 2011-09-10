@@ -236,8 +236,12 @@
 <h3>phpBB Recent Topics News</h3>
 <ul>
 <?php
-	foreach ($lnx_feed->get_items() as $item){
-		printf('<li><a href="%s">%s</a></li>',$item->get_permalink(), $item->get_title());
+	if (isset($lnx_lifestream_feed->errors)) {
+		echo '<li><b>Error Downloading Feed</b>. Looks like you are going to have to visit <a href="http://www.linickx.com/tag/phpbb_recent_topics/">www.linickx.com/tag/phpbb_recent_topics</a> manually to keep up with the news! </li>';
+	} else {
+		foreach ($lnx_feed->get_items() as $item){
+			printf('<li><a href="%s">%s</a></li>',$item->get_permalink(), $item->get_title());
+		}
 	}
 	?>
 </ul>
